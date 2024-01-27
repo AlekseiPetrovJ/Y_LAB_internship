@@ -1,14 +1,14 @@
 package ru.petrov.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class User extends AbstractEntity {
     private String password;
     private Role role;
-    private Date registered;
+    private LocalDate registered;
 
-    public User(UUID id, String name, String password, Role role, Date registered) {
+    public User(UUID id, String name, String password, Role role, LocalDate registered) {
         super(id, name);
         this.password = password;
         this.role = role;
@@ -16,7 +16,7 @@ public class User extends AbstractEntity {
     }
 
     public User(UUID id, String name, String password, Role role) {
-        this(id, name, password, role, new Date());
+        this(id, name, password, role, LocalDate.now());
     }
     public User(String name, String password, Role role) {
         this(null, name, password, role);
@@ -38,11 +38,11 @@ public class User extends AbstractEntity {
         this.role = role;
     }
 
-    public Date getRegistered() {
+    public LocalDate getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(LocalDate registered) {
         this.registered = registered;
     }
 }

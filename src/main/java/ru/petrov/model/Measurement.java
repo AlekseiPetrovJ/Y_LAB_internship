@@ -1,23 +1,26 @@
 package ru.petrov.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class Measurement extends AbstractEntity {
     private TypeOfValue typeOfValue;
-    private Date registered;
+    private LocalDate registered;
     private User user;
 
 
-    public Measurement(UUID id, String name, TypeOfValue typeOfValue, User user, Date registered) {
+    public Measurement(UUID id, String name, TypeOfValue typeOfValue, User user, LocalDate registered) {
         super(id, name);
         this.typeOfValue = typeOfValue;
         this.user = user;
         this.registered = registered;
     }
 
-    public Measurement(UUID id, String name, TypeOfValue typeOfValue, User user) {
-        this(id, name, typeOfValue, user, new Date());
+    public Measurement(String name, TypeOfValue typeOfValue, LocalDate registered, User user) {
+        super(UUID.randomUUID(), name);
+        this.typeOfValue = typeOfValue;
+        this.registered = registered;
+        this.user = user;
     }
 
     public TypeOfValue getTypeOfValue() {
@@ -28,11 +31,11 @@ public class Measurement extends AbstractEntity {
         this.typeOfValue = typeOfValue;
     }
 
-    public Date getRegistered() {
+    public LocalDate getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(LocalDate registered) {
         this.registered = registered;
     }
 
