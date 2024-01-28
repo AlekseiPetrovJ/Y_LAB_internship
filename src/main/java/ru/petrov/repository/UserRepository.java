@@ -16,5 +16,8 @@ public interface UserRepository {
     //empty Optional if not found
     Optional<User> get(UUID uuid);
 
+    Optional<User> get(String name);
+
+
     List<User> getAll();
 }

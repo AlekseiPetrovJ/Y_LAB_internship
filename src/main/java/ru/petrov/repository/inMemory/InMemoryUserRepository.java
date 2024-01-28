@@ -4,10 +4,13 @@ import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
 import ru.petrov.util.NotFoundException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class InMemoryUserRepository implements UserRepository {
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     public InMemoryUserRepository() {
     }
@@ -18,7 +21,7 @@ public class InMemoryUserRepository implements UserRepository {
             user.setUuid(UUID.randomUUID());
             users.add(user);
         } else {
-            if (users.contains(user)) {
+            if (get(user.getUuid()).isPresent()) {
                 users.replaceAll(user1 -> user1 = user);
             } else {
                 return Optional.empty();
@@ -29,18 +32,18 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public boolean delete(UUID uuid) {
-        if (get(uuid).isEmpty()) {
-            throw new NotFoundException("Not found entity with uuid: " + uuid);
-        } else {
-            return users.remove(get(uuid).get());
-        }
-
-
+        return users.remove(get(uuid).
+                orElseThrow(() -> new NotFoundException("Not found entity with uuid: " + uuid)));
     }
 
     @Override
     public Optional<User> get(UUID uuid) {
         return users.stream().filter(user -> user.getUuid().equals(uuid)).findAny();
+    }
+
+    @Override
+    public Optional<User> get(String name) {
+        return users.stream().filter(user -> user.getName().equals(name)).findAny();
     }
 
     @Override
