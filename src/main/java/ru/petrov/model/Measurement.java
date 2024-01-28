@@ -5,22 +5,24 @@ import java.util.UUID;
 
 public class Measurement extends AbstractEntity {
     private TypeOfValue typeOfValue;
+    private double value;
     private LocalDate registered;
     private User user;
 
 
-    public Measurement(UUID id, String name, TypeOfValue typeOfValue, User user, LocalDate registered) {
-        super(id, name);
+    public Measurement(UUID id, TypeOfValue typeOfValue, User user, LocalDate registered) {
+        super(id);
         this.typeOfValue = typeOfValue;
         this.user = user;
         this.registered = registered;
     }
 
-    public Measurement(String name, TypeOfValue typeOfValue, LocalDate registered, User user) {
-        super(UUID.randomUUID(), name);
+    public Measurement(TypeOfValue typeOfValue, LocalDate registered, User user, double value) {
+        super(null);
         this.typeOfValue = typeOfValue;
         this.registered = registered;
         this.user = user;
+        this.value = value;
     }
 
     public TypeOfValue getTypeOfValue() {
@@ -45,5 +47,16 @@ public class Measurement extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Measurement{" +
+                "uuid=" + uuid +
+                ", typeOfValue=" + typeOfValue.name +
+                ", value=" + value +
+                ", registered=" + registered +
+                ", user=" + user.name +
+                '}';
     }
 }
