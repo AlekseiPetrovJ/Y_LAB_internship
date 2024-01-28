@@ -4,11 +4,9 @@ import java.util.UUID;
 
 public abstract class AbstractEntity {
     protected UUID uuid;
-    protected String name;
 
-    public AbstractEntity(UUID uuid, String name) {
+    public AbstractEntity(UUID uuid) {
         this.uuid = uuid;
-        this.name = name;
     }
 
     public AbstractEntity() {
@@ -22,21 +20,13 @@ public abstract class AbstractEntity {
         this.uuid = uuid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isNew() {
         return this.uuid == null;
     }
 
     @Override
     public String toString() {
-        return String.format("%s. UUID: %s. Name: %s.", getClass().getSimpleName(),uuid,name);
+        return String.format("%s. UUID: %s.", getClass().getSimpleName(),uuid);
     }
 
     @Override
