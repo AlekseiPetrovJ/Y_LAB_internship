@@ -11,7 +11,8 @@ public class WelcomePage {
 
     private static final int LOGOUT = 3;
 
-    private static final int VIEW_ACTUAL_MEASUREMENTS = 4;
+    private static final int VIEW_ADD_TYPE_OF_VALUE = 4;
+    private static final int VIEW_ACTUAL_MEASUREMENTS = 5;
 
 
     private static final int EXIT = 99;
@@ -28,11 +29,11 @@ public class WelcomePage {
                 continue;
             }
 
-
             switch (command) {
-                case REGISTRATION -> RegistrationPage.registration();
+                case REGISTRATION -> RegistrationUserPage.registration();
                 case LOGIN -> AuthorizationPage.login();
                 case LOGOUT -> AuthorizationPage.logout();
+                case VIEW_ADD_TYPE_OF_VALUE -> ViewTypesOfValuePage.view();
                 case VIEW_ACTUAL_MEASUREMENTS -> ActualMeasurementsPage.getActualMeasurements()
                         .forEach(measurement -> messenger.sendString(measurement.toString()));
                 case EXIT -> messenger.sendString("Работа программы завершена.");
@@ -53,6 +54,7 @@ public class WelcomePage {
             sb.append(LOGIN).append(" - Авторизация\n");
         } else {
             sb.append(LOGOUT).append(" - Выход из профиля\n");
+            sb.append(VIEW_ADD_TYPE_OF_VALUE).append(" - Просмотр, добавление типов показаний\n");
             sb.append(VIEW_ACTUAL_MEASUREMENTS).append(" - Получение актуальных показаний счетчиков\n");
 
         }
@@ -70,7 +72,8 @@ public class WelcomePage {
             return true;
         } else if (getCurrentUser().isPresent()) {
             return (getCurrentUser().get().getRole().equals(Role.USER) || (getCurrentUser().get().getRole().equals(Role.ADMIN)))
-                    && (command == REGISTRATION || command == LOGOUT || command == EXIT || command == VIEW_ACTUAL_MEASUREMENTS);
+                    && (command == REGISTRATION || command == LOGOUT || command == EXIT
+                    || command == VIEW_ADD_TYPE_OF_VALUE || command == VIEW_ACTUAL_MEASUREMENTS);
         }
         return false;
     }
