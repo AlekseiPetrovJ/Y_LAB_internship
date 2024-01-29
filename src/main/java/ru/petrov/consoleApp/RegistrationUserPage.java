@@ -6,9 +6,9 @@ import ru.petrov.model.User;
 import static ru.petrov.Initialization.messenger;
 import static ru.petrov.Initialization.userRepository;
 
-public class RegistrationPage {
+public class RegistrationUserPage {
     public static void registration() {
-        messenger.sendString("Страница регистрации.\n");
+        messenger.sendString("Страница регистрации пользователя.\n");
         String userName;
         while (true) {
             messenger.sendString("Введите имя:");
