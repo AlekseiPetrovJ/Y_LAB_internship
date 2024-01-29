@@ -3,21 +3,23 @@ package ru.petrov;
 import ru.petrov.InOut.ConsoleHelper;
 import ru.petrov.InOut.Messenger;
 import ru.petrov.model.Measurement;
-import ru.petrov.service.AuthorizationService;
 import ru.petrov.model.Role;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.model.User;
+import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.inMemory.InMemoryMeasurementRepository;
+import ru.petrov.repository.inMemory.InMemoryTypeOfValueRepository;
 import ru.petrov.repository.inMemory.InMemoryUserRepository;
+import ru.petrov.service.AuthorizationService;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.UUID;
 
 public class Initialization {
     public static InMemoryUserRepository userRepository;
     public static InMemoryMeasurementRepository measurementRepository;
     public static AuthorizationService authorizationService;
+    public static TypeOfValueRepository typeOfValueRepository;
 
     private static Optional<User> currentUser;
 
@@ -27,12 +29,18 @@ public class Initialization {
         userRepository = new InMemoryUserRepository();
         measurementRepository = new InMemoryMeasurementRepository(userRepository);
         authorizationService = new AuthorizationService(userRepository);
+        typeOfValueRepository = new InMemoryTypeOfValueRepository();
 
         messenger = new ConsoleHelper();
 
-        TypeOfValue gas = new TypeOfValue(UUID.randomUUID(), "gas");
-        TypeOfValue coldWater = new TypeOfValue(UUID.randomUUID(), "cold water");
-        TypeOfValue hotWater = new TypeOfValue(UUID.randomUUID(), "hot water");
+        TypeOfValue gas = new TypeOfValue("gas", "m3");
+        TypeOfValue coldWater = new TypeOfValue( "cold water", "m3");
+        TypeOfValue hotWater = new TypeOfValue("hot water", "m3");
+        typeOfValueRepository.save(gas);
+        typeOfValueRepository.save(coldWater);
+        typeOfValueRepository.save(hotWater);
+
+
 
         User user = new User("user", "123", Role.USER);
         User admin = new User("admin", "123", Role.ADMIN);
@@ -41,7 +49,7 @@ public class Initialization {
 
         measurementRepository.save(new Measurement(hotWater,  LocalDate.of(2023,11,21), user, 55.0), user.getUuid());
         measurementRepository.save(new Measurement(hotWater,  LocalDate.of(2023,12,20), user, 59.0), user.getUuid());
-        measurementRepository.save(new Measurement(coldWater, LocalDate.now(), user, 66),   user.getUuid());
+        measurementRepository.save(new Measurement(coldWater, LocalDate.now(),                                user, 66),   user.getUuid());
         measurementRepository.save(new Measurement(coldWater, LocalDate.of(2023,12,20), user, 77),   user.getUuid());
         measurementRepository.save(new Measurement(coldWater, LocalDate.of(2023,11,20), user, 88),   user.getUuid());
         measurementRepository.save(new Measurement(coldWater, LocalDate.of(2023,12,20), admin, 77),  admin.getUuid());

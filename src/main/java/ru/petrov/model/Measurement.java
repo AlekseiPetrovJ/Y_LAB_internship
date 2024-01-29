@@ -51,8 +51,9 @@ public class Measurement extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Measurement{typeOfValue=" + typeOfValue +
-                ", value=" + value +
+        return "Measurement{" + typeOfValue.getName() +
+                "=" + value +
+                " " + typeOfValue.getUnitOfMeasurement() +
                 ", registered=" + registered +
                 ", user=" + user.getName() +
                 "}\n";
