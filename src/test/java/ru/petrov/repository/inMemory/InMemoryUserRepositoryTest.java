@@ -1,13 +1,13 @@
 package ru.petrov.repository.inMemory;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
 import ru.petrov.util.NotFoundException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,12 +26,14 @@ class InMemoryUserRepositoryTest {
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Добавление нового пользователя.")
     void save() {
         userRepository.save(user);
         assertEquals(Optional.of(user), userRepository.get(user.getUuid()));
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Изменение существующего пользователя.")
     void update() {
         userRepository.save(user);
         UUID uuidTemp = user.getUuid();
@@ -41,11 +43,13 @@ class InMemoryUserRepositoryTest {
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Проверка входных данных")
     void updateNotFound() {
         assertEquals(Optional.empty(), userRepository.get(UUID.randomUUID()));
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Удаление существующего пользователя.")
     void delete() {
         userRepository.save(admin);
         assertTrue(userRepository.delete(admin.getUuid()));
@@ -53,11 +57,13 @@ class InMemoryUserRepositoryTest {
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Удаление не существующего пользователя")
     public void deleteNotFound() {
         assertThrows(NotFoundException.class, () -> userRepository.delete(UUID.randomUUID()));
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Получение существующего пользователя")
     void get() {
         userRepository.save(admin);
         assertEquals(Optional.of(admin), userRepository.get(admin.getUuid()));
@@ -65,11 +71,13 @@ class InMemoryUserRepositoryTest {
 
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Получение не существущего пользователя")
     void getNotFound() {
         assertEquals(Optional.empty(), userRepository.get(UUID.randomUUID()));
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Получение списка всех пользователей")
     void getAll() {
         userRepository.save(userNew);
         userRepository.save(admin);
