@@ -1,12 +1,19 @@
 package ru.petrov.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class AbstractEntity {
     protected UUID uuid;
+    protected LocalDateTime registered;
+
 
     public AbstractEntity(UUID uuid) {
         this.uuid = uuid;
+    }
+    public AbstractEntity(UUID uuid, LocalDateTime registered) {
+        this.uuid = uuid;
+        this.registered = registered;
     }
 
     public AbstractEntity() {
@@ -22,6 +29,14 @@ public abstract class AbstractEntity {
 
     public boolean isNew() {
         return this.uuid == null;
+    }
+
+    public LocalDateTime getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(LocalDateTime registered) {
+        this.registered = registered;
     }
 
     @Override
