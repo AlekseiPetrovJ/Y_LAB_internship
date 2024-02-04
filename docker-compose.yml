@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:15.5
+    environment:
+      POSTGRES_DB: "ylab"
+      POSTGRES_USER: "ylab"
+      POSTGRES_PASSWORD: "ylabylab"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5433:5432"
