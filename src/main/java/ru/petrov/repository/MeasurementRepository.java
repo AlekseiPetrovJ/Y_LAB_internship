@@ -2,7 +2,6 @@ package ru.petrov.repository;
 
 import ru.petrov.model.Measurement;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,7 +12,7 @@ public interface MeasurementRepository {
 
     List<Measurement> getLatest(UUID userUuid);
 
-    List<Measurement> getByMonth(LocalDate date, UUID userUuid);
+    List<Measurement> getByMonth(int year, int month, UUID userUuid);
 
     //Ordered by date
     List<Measurement> getAll(UUID userUuid);
