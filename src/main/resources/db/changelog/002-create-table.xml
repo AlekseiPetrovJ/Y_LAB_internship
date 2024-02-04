@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        logicalFilePath="db/changelog.xml">
+
+    <changeSet id="1-createTable-person_role" author="aleksei" >
+        <createTable tableName="person_role" >
+            <column name="role_id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2-createTable-person" author="aleksei">
+        <createTable tableName="person">
+            <column name="person_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INTEGER">
+                <constraints foreignKeyName="fk_person_role" references="person_role(role_id)" nullable="false"/>
+            </column>
+            <column name="registered" type="TIMESTAMP" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3-createTable-type_of_value" author="aleksei" >
+        <createTable tableName="type_of_value">
+            <column name="type_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="unit_of_measurement" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registered" type="TIMESTAMP" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4-createTable-measurement" author="aleksei">
+        <createTable tableName="measurement">
+            <column name="measurement_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="person_uuid" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_measurement_person"
+                             references="person(person_uuid)"/>
+            </column>
+            <column name="measurement_value" type="Double precision">
+                <constraints nullable="false" checkConstraint="measurement_value > 0"/>
+            </column>
+            <column name="type_uuid" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_measurement_type"
+                             references="type_of_value(type_uuid)"/>
+            </column>
+            <column name="reg_year" type="INT" defaultValueComputed="(date_part('year',now()) :: int)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reg_month" type="INT" defaultValueComputed="(date_part('month',now()) :: int)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseColumnNames="person_uuid"
+                baseTableName="measurement"
+                constraintName="fk_measurement_person"
+                referencedColumnNames="person_uuid"
+                referencedTableName="person"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="5-createIndex" author="aleksei">
+        <createIndex indexName="measurement_unique_person_month_type" tableName="measurement" unique="true">
+            <column name="person_uuid"/>
+            <column name="reg_year"/>
+            <column name="reg_month"/>
+            <column name="type_uuid"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
