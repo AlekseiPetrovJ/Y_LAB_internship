@@ -10,7 +10,7 @@ import ru.petrov.repository.UserRepository;
 import java.sql.*;
 import java.util.*;
 
-public class JdbcMeasurementRepository implements MeasurementRepository {
+public class JdbcMeasurementRepository extends  AbstractJdbc implements MeasurementRepository {
     private final UserRepository userRepository;
     private final TypeOfValueRepository typeOfValueRepository;
 
@@ -147,13 +147,5 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
             return measurementsAll;
         }
         return measurementsAll;
-    }
-
-    public static Connection getConnection() throws SQLException {
-        ResourceBundle resource = ResourceBundle.getBundle("db/database");
-        String url = resource.getString("url");
-        String db_user = resource.getString("db_user");
-        String pass = resource.getString("password");
-        return DriverManager.getConnection(url, db_user, pass);
     }
 }

@@ -6,7 +6,7 @@ import ru.petrov.repository.TypeOfValueRepository;
 import java.sql.*;
 import java.util.*;
 
-public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
+public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfValueRepository {
     @Override
     public Optional<TypeOfValue> save(TypeOfValue typeOfValue) {
         String query;
@@ -110,11 +110,5 @@ public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
         return types;
     }
 
-    public static Connection getConnection() throws SQLException {
-        ResourceBundle resource = ResourceBundle.getBundle("database");
-        String url = resource.getString("url");
-        String db_user = resource.getString("db_user");
-        String pass = resource.getString("password");
-        return DriverManager.getConnection(url, db_user, pass);
-    }
+
 }

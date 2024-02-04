@@ -7,7 +7,7 @@ import ru.petrov.repository.UserRepository;
 import java.sql.*;
 import java.util.*;
 
-public class JdbcUserRepository implements UserRepository {
+public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     @Override
     public Optional<User> save(User user) {
         String query;
@@ -125,13 +125,5 @@ public class JdbcUserRepository implements UserRepository {
             System.out.println("SQL exception: " + e.getMessage());
         }
         return users;
-    }
-
-    public static Connection getConnection() throws SQLException {
-        ResourceBundle resource = ResourceBundle.getBundle("database");
-        String url = resource.getString("url");
-        String db_user = resource.getString("db_user");
-        String pass = resource.getString("password");
-        return DriverManager.getConnection(url, db_user, pass);
     }
 }
