@@ -4,27 +4,23 @@ import java.util.UUID;
 
 public class Measurement extends AbstractEntity {
     private TypeOfValue typeOfValue;
-    private double value;
+    private final double value;
     private User user;
     private int year;
     private int month;
 
 
-    public Measurement(UUID uuid, TypeOfValue typeOfValue, User user, int year, int month) {
+    public Measurement(UUID uuid, TypeOfValue typeOfValue, int year, int month, User user, double value) {
         super(uuid);
         this.typeOfValue = typeOfValue;
         this.user = user;
         this.year = year;
         this.month = month;
+        this.value = value;
     }
 
     public Measurement(TypeOfValue typeOfValue, int year, int month, User user, double value) {
-        super(null);
-        this.typeOfValue = typeOfValue;
-        this.year = year;
-        this.month = month;
-        this.user = user;
-        this.value = value;
+        this(null, typeOfValue, year, month, user, value);
     }
 
     public TypeOfValue getTypeOfValue() {
