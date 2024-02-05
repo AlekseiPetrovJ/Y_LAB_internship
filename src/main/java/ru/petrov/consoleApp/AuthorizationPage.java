@@ -15,7 +15,7 @@ public class AuthorizationPage {
         System.out.print("Введите пароль:");
         String userPass = consoleHelper.getPassword();
 
-        Optional<User> authorization = Initialization.authorizationService.Authorization(userName, userPass);
+        Optional<User> authorization = Initialization.authorizationService.authorization(userName, userPass);
 
         if (authorization.isEmpty()) {
             System.out.print("\nТакое имя и пароль не найдены в базе.\n\n");
