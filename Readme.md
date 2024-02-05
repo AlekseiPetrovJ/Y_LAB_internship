@@ -1,6 +1,8 @@
 # Система учета показаний
 
-![2. ДЗ2](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/2)
+[1. ДЗ №1](https://github.com/AlekseiPetrovJ/Y_LAB_internship)
+
+[2. ДЗ №2](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/2)
 
 Позволяет регистировать показания приборов учета.
 
