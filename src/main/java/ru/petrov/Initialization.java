@@ -1,7 +1,6 @@
 package ru.petrov;
 
-import ru.petrov.InOut.ConsoleHelper;
-import ru.petrov.InOut.Messenger;
+import ru.petrov.in.ConsoleHelper;
 import ru.petrov.model.Measurement;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.model.User;
@@ -23,7 +22,7 @@ public class Initialization {
 
     private static Optional<User> currentUser;
 
-    public static Messenger messenger;
+    public static ConsoleHelper consoleHelper;
 
     public static void init() {
         /*userRepository = new InMemoryUserRepository();
@@ -37,7 +36,7 @@ public class Initialization {
         measurementRepository = new JdbcMeasurementRepository(userRepository, typeOfValueRepository);
         authorizationService = new AuthorizationService(userRepository);
 
-        messenger = new ConsoleHelper();
+        consoleHelper = new ConsoleHelper();
 
        /* TypeOfValue gas = new TypeOfValue("gas", "m3");
         TypeOfValue coldWater = new TypeOfValue( "cold water", "m3");

@@ -1,17 +1,16 @@
-package ru.petrov.InOut;
+package ru.petrov.in;
 
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleHelper implements Messenger {
+public class ConsoleHelper {
     private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
     /**
      *@return Read a line of text by BufferedReader.readLine
      */
-    @Override
     public String getString() {
         try {
             return bufferedReader.readLine();
@@ -24,7 +23,6 @@ public class ConsoleHelper implements Messenger {
      * @return int parsed from a line of text by BufferedReader.readLine
      * @throws NumberFormatException
      */
-    @Override
     public int getInt() {
         try {
             return Integer.parseInt(getString().trim());
@@ -51,10 +49,5 @@ public class ConsoleHelper implements Messenger {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void sendString(String message) {
-        System.out.printf(message);
     }
 }
