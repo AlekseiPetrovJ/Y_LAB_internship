@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 public class ConsoleHelper implements Messenger {
     private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
+    /**
+     *@return Read a line of text by BufferedReader.readLine
+     */
     @Override
     public String getString() {
         try {
@@ -17,16 +20,25 @@ public class ConsoleHelper implements Messenger {
         }
     }
 
+    /**
+     * @return int parsed from a line of text by BufferedReader.readLine
+     * @throws NumberFormatException
+     */
     @Override
     public int getInt() {
         try {
             return Integer.parseInt(getString().trim());
         } catch (NumberFormatException e) {
-            System.out.println("catch2");
             return 0;
         }
     }
 
+    /**
+     *@return  A character array containing the password or passphrase read
+     *          from the console, not including any line-termination characters
+     *          if System.console available,
+     *          or {@link #getString()}
+     */
     public String getPassword() {
         try {
             Console con = System.console();
@@ -39,7 +51,6 @@ public class ConsoleHelper implements Messenger {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
