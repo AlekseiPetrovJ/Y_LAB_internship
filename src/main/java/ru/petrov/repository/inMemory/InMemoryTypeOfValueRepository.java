@@ -2,7 +2,6 @@ package ru.petrov.repository.inMemory;
 
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.repository.TypeOfValueRepository;
-import ru.petrov.util.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class InMemoryTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public boolean delete(UUID uuid) {
         return typeOfValues.remove(get(uuid).
-                orElseThrow(() -> new NotFoundException("Not found entity with uuid: " + uuid)));
+                orElse(null));
     }
 
     @Override

@@ -3,7 +3,7 @@ package ru.petrov.consoleApp;
 import ru.petrov.model.Role;
 
 import static ru.petrov.Initialization.getCurrentUser;
-import static ru.petrov.Initialization.messenger;
+import static ru.petrov.Initialization.consoleHelper;
 
 public class WelcomePage {
     private static final int REGISTRATION = 1;
@@ -19,13 +19,13 @@ public class WelcomePage {
 
     public static void showMenu() {
         int command = 0;
-        messenger.sendString(getHeadMenu());
+        System.out.printf(getHeadMenu());
 
         while (command != EXIT) {
-            messenger.sendString(getBodyMenu());
-            command = messenger.getInt();
+            System.out.printf(getBodyMenu());
+            command = consoleHelper.getInt();
             if (!validationCommand(command)) {
-                messenger.sendString("Не валидная команда.\n");
+                System.out.print("Не валидная команда.\n");
                 continue;
             }
 
@@ -35,8 +35,8 @@ public class WelcomePage {
                 case LOGOUT -> AuthorizationPage.logout();
                 case VIEW_ADD_TYPE_OF_VALUE -> ViewTypesOfValuePage.view();
                 case VIEW_ACTUAL_MEASUREMENTS -> ActualMeasurementsPage.getActualMeasurements()
-                        .forEach(measurement -> messenger.sendString(measurement.toString()));
-                case EXIT -> messenger.sendString("Работа программы завершена.");
+                        .forEach(measurement -> System.out.printf(measurement.toString()));
+                case EXIT -> System.out.print("Работа программы завершена.");
             }
         }
     }

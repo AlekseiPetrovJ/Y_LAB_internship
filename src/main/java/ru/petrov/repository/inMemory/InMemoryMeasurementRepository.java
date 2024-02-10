@@ -2,25 +2,26 @@ package ru.petrov.repository.inMemory;
 
 import ru.petrov.model.Measurement;
 import ru.petrov.repository.MeasurementRepository;
+import ru.petrov.repository.UserRepository;
 import ru.petrov.util.NotFoundException;
 import ru.petrov.util.NotUniqueValueException;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 public class InMemoryMeasurementRepository implements MeasurementRepository {
     private final List<Measurement> measurements = new ArrayList<>();
-    private InMemoryUserRepository userRepository;
+    private UserRepository userRepository;
 
     public InMemoryMeasurementRepository() {
     }
 
-    public InMemoryMeasurementRepository(InMemoryUserRepository userRepository) {
+    public InMemoryMeasurementRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -28,9 +29,11 @@ public class InMemoryMeasurementRepository implements MeasurementRepository {
     public Optional<Measurement> save(Measurement measurement, UUID userUuid) {
         if (measurement.isNew()) {
             if (measurements.stream().anyMatch(isValueOfThisType(measurement))) {
+                //TODO добавить логирование, убрать исключение и возвращать пустой Опционал
                 throw new NotUniqueValueException("there is already a value of this type in this month");
             }
             measurement.setUser(userRepository.get(userUuid)
+                    //TODO добавить логирование, убрать исключение и возвращать пустой Опционал
                     .orElseThrow(() -> new NotFoundException("Not found entity with uuid: " + userUuid)));
             measurement.setUuid(UUID.randomUUID());
             measurements.add(measurement);
@@ -45,34 +48,35 @@ public class InMemoryMeasurementRepository implements MeasurementRepository {
         return new ArrayList<>(measurements.stream()
                 .filter(measurement -> measurement.getUser().getUuid().equals(userUuid))
                 .collect(toMap(Measurement::getTypeOfValue, Function.identity(),
-                        BinaryOperator.maxBy(Comparator.comparing(Measurement::getRegistered)))).values());
+                        BinaryOperator.maxBy(Comparator.comparing(Measurement::getYear)
+                                .thenComparing(Measurement::getMonth)))).values());
     }
 
     @Override
-    public List<Measurement> getByMonth(LocalDate date, UUID userUuid) {
+    public List<Measurement> getByMonth(int year, int month, UUID userUuid) {
         return measurements.stream()
-                .filter(isValueInThisPeriod(date, userUuid))
+                .filter(isValueInThisPeriod(year, month, userUuid))
                 .collect(toList());
     }
 
-    private static Predicate<Measurement> isValueInThisPeriod(LocalDate date, UUID userUuid) {
-        return measurement -> (measurement.getRegistered().getMonth().equals(date.getMonth())
-                && measurement.getRegistered().getYear() == date.getYear()
+    private static Predicate<Measurement> isValueInThisPeriod(int year, int month, UUID userUuid) {
+        return measurement -> (measurement.getMonth() == month
+                && measurement.getYear() == year
                 && measurement.getUser().getUuid().equals(userUuid));
     }
 
     private static Predicate<Measurement> isValueOfThisType(Measurement m1) {
-        return m2 -> (m2.getRegistered().getMonth().equals(m1.getRegistered().getMonth())
-                && m2.getRegistered().getYear() == m1.getRegistered().getYear()
+        return m2 -> m2.getMonth() == m1.getMonth()
+                && m2.getYear() == m1.getYear()
                 && m2.getUser().getUuid().equals(m1.getUser().getUuid())
-                && m2.getTypeOfValue().equals(m1.getTypeOfValue()));
+                && m2.getTypeOfValue().equals(m1.getTypeOfValue());
     }
 
     @Override
     public List<Measurement> getAll(UUID userUuid) {
         return measurements.stream()
                 .filter(measurement -> measurement.getUser().getUuid().equals(userUuid))
-                .sorted(Comparator.comparing(Measurement::getRegistered))
+                .sorted(Comparator.comparing(Measurement::getYear).thenComparing(Measurement::getMonth))
                 .collect(toList());
     }
 }

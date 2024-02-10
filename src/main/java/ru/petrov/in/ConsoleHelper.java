@@ -1,14 +1,16 @@
-package ru.petrov.InOut;
+package ru.petrov.in;
 
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleHelper implements Messenger {
+public class ConsoleHelper {
     private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    @Override
+    /**
+     *@return Read a line of text by BufferedReader.readLine
+     */
     public String getString() {
         try {
             return bufferedReader.readLine();
@@ -17,16 +19,24 @@ public class ConsoleHelper implements Messenger {
         }
     }
 
-    @Override
+    /**
+     * @return int parsed from a line of text by BufferedReader.readLine
+     * @throws NumberFormatException
+     */
     public int getInt() {
         try {
             return Integer.parseInt(getString().trim());
         } catch (NumberFormatException e) {
-            System.out.println("catch2");
             return 0;
         }
     }
 
+    /**
+     *@return  A character array containing the password or passphrase read
+     *          from the console, not including any line-termination characters
+     *          if System.console available,
+     *          or {@link #getString()}
+     */
     public String getPassword() {
         try {
             Console con = System.console();
@@ -39,11 +49,5 @@ public class ConsoleHelper implements Messenger {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    @Override
-    public void sendString(String message) {
-        System.out.printf(message);
     }
 }

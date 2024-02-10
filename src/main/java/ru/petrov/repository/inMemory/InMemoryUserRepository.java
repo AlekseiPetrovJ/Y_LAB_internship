@@ -2,7 +2,6 @@ package ru.petrov.repository.inMemory;
 
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public boolean delete(UUID uuid) {
         return users.remove(get(uuid).
-                orElseThrow(() -> new NotFoundException("Not found entity with uuid: " + uuid)));
+                orElse(null));
     }
 
     @Override

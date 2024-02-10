@@ -7,15 +7,24 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TypeOfValueRepository {
-    //empty Optional if not new
+    /**
+     * @return empty Optional if not new
+     */
     Optional<TypeOfValue> save(TypeOfValue typeOfValue);
 
-    // false if not found
+    /**
+     * @return false if not found
+     */
     boolean delete(UUID uuid);
 
-    //empty Optional if not found
+    /**
+     * @return empty Optional if not found
+     */
     Optional<TypeOfValue> get(UUID uuid);
 
+    /**
+     * @return empty Optional if not found
+     */
     Optional<TypeOfValue> get(String name);
 
     List<TypeOfValue> getAll();

@@ -12,7 +12,10 @@ public class AuthorizationService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> Authorization(String name, String password) {
+    /**
+    *@return empty Optional if User with name-password not found in repository
+     */
+    public Optional<User> authorization(String name, String password) {
         if (userRepository.get(name).isPresent() &&
                 userRepository.get(name).get().getPassword().equals(password)) {
             return userRepository.get(name);
