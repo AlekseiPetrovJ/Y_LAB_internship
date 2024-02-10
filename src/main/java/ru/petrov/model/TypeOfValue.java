@@ -1,12 +1,10 @@
 package ru.petrov.model;
 
-import java.util.UUID;
-
 public class TypeOfValue extends AbstractNamedEntity {
     private final String unitOfMeasurement;
 
-    public TypeOfValue(UUID uuid, String name, String unitOfMeasurement) {
-        super(uuid, name);
+    public TypeOfValue(Integer id, String name, String unitOfMeasurement) {
+        super(id, name);
         this.unitOfMeasurement = unitOfMeasurement;
     }
 

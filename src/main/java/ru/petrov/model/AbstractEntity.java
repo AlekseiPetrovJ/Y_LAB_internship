@@ -1,32 +1,31 @@
 package ru.petrov.model;
 
-import java.util.UUID;
-
 public abstract class AbstractEntity {
-    protected UUID uuid;
+    public static final int START_SEQ = 100000;
+    protected Integer id;
 
-    public AbstractEntity(UUID uuid) {
-        this.uuid = uuid;
+    public AbstractEntity(Integer id) {
+        this.id = id;
     }
 
     public AbstractEntity() {
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public boolean isNew() {
-        return this.uuid == null;
+        return this.id == null;
     }
 
     @Override
     public String toString() {
-        return String.format("%s. UUID: %s.", getClass().getSimpleName(),uuid);
+        return String.format("%s. Id: %s.", getClass().getSimpleName(), id);
     }
 
     @Override
@@ -40,7 +39,7 @@ public abstract class AbstractEntity {
         if (getClass() != o.getClass())
             return false;
         AbstractEntity that = (AbstractEntity) o;
-        return uuid != null && uuid.equals(that.uuid);
+        return id != null && id.equals(that.id);
     }
 
 }

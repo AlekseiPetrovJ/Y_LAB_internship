@@ -4,7 +4,6 @@ import ru.petrov.model.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface UserRepository {
     /**
@@ -15,12 +14,12 @@ public interface UserRepository {
     /**
      * @return false if not found
      */
-    boolean delete(UUID uuid);
+    boolean delete(Integer id);
 
     /**
      * @return empty Optional if not found
      */
-    Optional<User> get(UUID uuid);
+    Optional<User> get(Integer id);
 
     /**
      * @return empty Optional if not found

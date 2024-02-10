@@ -1,8 +1,8 @@
 package ru.petrov.model;
 
 public enum Role {
-    ADMIN(1000),
-    USER(1001);
+    ADMIN(100000),
+    USER(100001);
 
     private final int roleId;
 

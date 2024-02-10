@@ -4,20 +4,19 @@ import ru.petrov.model.Measurement;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface MeasurementRepository {
     /**
      * @return empty Optional when attempt update or measurement does not belong to userId
      */
-    Optional<Measurement> save(Measurement measurement, UUID userUuid);
+    Optional<Measurement> save(Measurement measurement, Integer userId);
 
-    List<Measurement> getLatest(UUID userUuid);
+    List<Measurement> getLatest(Integer userId);
 
-    List<Measurement> getByMonth(int year, int month, UUID userUuid);
+    List<Measurement> getByMonth(int year, int month, Integer userId);
 
     /**
      * @return List<Measurement> ordered by Measurement's date
      */
-    List<Measurement> getAll(UUID userUuid);
+    List<Measurement> getAll(Integer userId);
 }

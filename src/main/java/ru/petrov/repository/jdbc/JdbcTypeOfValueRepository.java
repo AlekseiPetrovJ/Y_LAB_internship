@@ -32,12 +32,12 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        String query = "DELETE FROM type_of_value WHERE type_uuid=UUID(?)";
+    public boolean delete(Integer id) {
+        String query = "DELETE FROM type_of_value WHERE type_id=?";
         try (Connection con = getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
 
-            preparedStatement.setString(1, uuid.toString());
+            preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             //TODO перенести в лог
@@ -47,18 +47,18 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
     }
 
     @Override
-    public Optional<TypeOfValue> get(UUID uuid) {
-        String selectSql = "SELECT * FROM type_of_value WHERE type_uuid=UUID(?)";
+    public Optional<TypeOfValue> get(Integer id) {
+        String selectSql = "SELECT * FROM type_of_value WHERE type_id=?";
         try (Connection con = getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
-            preparedStatement.setString(1, uuid.toString());
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String unitOfMeasurement = resultSet.getString("unit_of_measurement");
-                return Optional.of(new TypeOfValue(uuid, name, unitOfMeasurement));
+                return Optional.of(new TypeOfValue(id, name, unitOfMeasurement));
             }
         } catch (SQLException e) {
             //TODO перенести в лог
@@ -77,10 +77,10 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                UUID typeUuid = UUID.fromString(resultSet.getString("type_uuid"));
+                Integer typeId = resultSet.getInt("type_id");
                 String typeName = resultSet.getString("name");
                 String unitOfMeasurement = resultSet.getString("unit_of_measurement");
-                return Optional.of(new TypeOfValue(typeUuid, typeName, unitOfMeasurement));
+                return Optional.of(new TypeOfValue(typeId, typeName, unitOfMeasurement));
             }
         } catch (SQLException e) {
             //TODO перенести в лог
@@ -98,10 +98,10 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
             ResultSet resultSet = statement.executeQuery(selectSql);
 
             while (resultSet.next()) {
-                UUID typeUuid = UUID.fromString(resultSet.getString("type_uuid"));
+                Integer typeId = resultSet.getInt("type_id");
                 String name = resultSet.getString("name");
                 String unitOfMeasurement = resultSet.getString("unit_of_measurement");
-                types.add(new TypeOfValue(typeUuid, name, unitOfMeasurement));
+                types.add(new TypeOfValue(typeId, name, unitOfMeasurement));
             }
         } catch (SQLException e) {
             //TODO перенести в лог

@@ -5,7 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
         logicalFilePath="db/changelog.xml">
-
+    <changeSet id="0-create_sequence_global_seq" author="aleksei" >
+        <createSequence sequenceName="global_seq" startValue="100000" />
+    </changeSet>
     <changeSet id="1-createTable-person_role" author="aleksei" >
         <createTable tableName="person_role" >
             <column name="role_id" type="INTEGER" autoIncrement="true">
@@ -18,7 +20,7 @@
     </changeSet>
     <changeSet id="2-createTable-person" author="aleksei">
         <createTable tableName="person">
-            <column name="person_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+            <column name="person_id" type="INTEGER" defaultValueComputed="nextval('global_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -38,7 +40,7 @@
 
     <changeSet id="3-createTable-type_of_value" author="aleksei" >
         <createTable tableName="type_of_value">
-            <column name="type_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+            <column name="type_id" type="INTEGER" defaultValueComputed="nextval('global_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR">
@@ -55,19 +57,19 @@
 
     <changeSet id="4-createTable-measurement" author="aleksei">
         <createTable tableName="measurement">
-            <column name="measurement_uuid" type="UUID" defaultValueComputed="gen_random_uuid()">
+            <column name="measurement_id" type="INTEGER" defaultValueComputed="nextval('global_seq')">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="person_uuid" type="UUID">
+            <column name="person_id" type="INTEGER">
                 <constraints nullable="false" foreignKeyName="FK_measurement_person"
-                             references="person(person_uuid)"/>
+                             references="person(person_id)"/>
             </column>
             <column name="measurement_value" type="Double precision">
                 <constraints nullable="false" checkConstraint="measurement_value > 0"/>
             </column>
-            <column name="type_uuid" type="UUID">
+            <column name="type_id" type="INTEGER">
                 <constraints nullable="false" foreignKeyName="FK_measurement_type"
-                             references="type_of_value(type_uuid)"/>
+                             references="type_of_value(type_id)"/>
             </column>
             <column name="reg_year" type="INT" defaultValueComputed="(date_part('year',now()) :: int)">
                 <constraints nullable="false"/>
@@ -77,20 +79,20 @@
             </column>
         </createTable>
         <addForeignKeyConstraint
-                baseColumnNames="person_uuid"
+                baseColumnNames="person_id"
                 baseTableName="measurement"
                 constraintName="fk_measurement_person"
-                referencedColumnNames="person_uuid"
+                referencedColumnNames="person_id"
                 referencedTableName="person"
                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="5-createIndex" author="aleksei">
         <createIndex indexName="measurement_unique_person_month_type" tableName="measurement" unique="true">
-            <column name="person_uuid"/>
+            <column name="person_id"/>
             <column name="reg_year"/>
             <column name="reg_month"/>
-            <column name="type_uuid"/>
+            <column name="type_id"/>
         </createIndex>
     </changeSet>
 

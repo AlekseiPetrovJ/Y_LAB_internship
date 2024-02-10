@@ -5,15 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
         logicalFilePath="db/changelog.xml">
-
+    <changeSet id="0-alter_sequence_global_seq" author="aleksei" >
+        <sql>
+            ALTER SEQUENCE global_seq RESTART WITH 100000;
+        </sql>
+    </changeSet>
     <changeSet id="1-insert-person_role" author="aleksei">
         <insert tableName="person_role">
-            <column name="role_id" valueNumeric="1000"/>
+            <column name="role_id" valueNumeric="100000"/>
             <column name="role" value="ADMIN"/>
         </insert>
 
         <insert tableName="person_role">
-            <column name="role_id" valueNumeric="1001"/>
+            <column name="role_id" valueNumeric="100001"/>
             <column name="role" value="USER"/>
         </insert>
     </changeSet>
@@ -37,16 +41,15 @@
 
     <changeSet id="3-insert-person" author="aleksei">
         <insert tableName="person">
-            <column name="name" value="user"/>
+            <column name="name" value="admin"/>
             <column name="password" value="123"/>
-            <column name="role_id" valueNumeric="1001"/>
+            <column name="role_id" valueNumeric="100000"/>
         </insert>
 
         <insert tableName="person">
-            <column name="name" value="admin"/>
+            <column name="name" value="user"/>
             <column name="password" value="123"/>
-            <column name="role_id" valueNumeric="1000"/>
+            <column name="role_id" valueNumeric="100001"/>
         </insert>
-
     </changeSet>
 </databaseChangeLog>

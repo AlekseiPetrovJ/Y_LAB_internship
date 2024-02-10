@@ -1,7 +1,5 @@
 package ru.petrov.model;
 
-import java.util.UUID;
-
 public class Measurement extends AbstractEntity {
     private TypeOfValue typeOfValue;
     private final double value;
@@ -10,8 +8,8 @@ public class Measurement extends AbstractEntity {
     private int month;
 
 
-    public Measurement(UUID uuid, TypeOfValue typeOfValue, int year, int month, User user, double value) {
-        super(uuid);
+    public Measurement(Integer id, TypeOfValue typeOfValue, int year, int month, User user, double value) {
+        super(id);
         this.typeOfValue = typeOfValue;
         this.user = user;
         this.year = year;

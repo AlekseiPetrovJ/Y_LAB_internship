@@ -4,7 +4,6 @@ import ru.petrov.model.TypeOfValue;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface TypeOfValueRepository {
     /**
@@ -15,12 +14,12 @@ public interface TypeOfValueRepository {
     /**
      * @return false if not found
      */
-    boolean delete(UUID uuid);
+    boolean delete(Integer id);
 
     /**
      * @return empty Optional if not found
      */
-    Optional<TypeOfValue> get(UUID uuid);
+    Optional<TypeOfValue> get(Integer id);
 
     /**
      * @return empty Optional if not found

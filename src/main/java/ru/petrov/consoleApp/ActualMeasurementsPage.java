@@ -13,11 +13,11 @@ public class ActualMeasurementsPage {
         System.out.print("Актуальные показания.\n");
         if (getCurrentUser().isPresent()) {
             if (getCurrentUser().get().getRole().equals(Role.USER)) {
-                return measurementRepository.getLatest(getCurrentUser().get().getUuid());
+                return measurementRepository.getLatest(getCurrentUser().get().getId());
             } else {
                 ArrayList<Measurement> resultAllUsers = new ArrayList<>();
                 userRepository.getAll().forEach(user ->
-                        resultAllUsers.addAll(measurementRepository.getLatest(user.getUuid())));
+                        resultAllUsers.addAll(measurementRepository.getLatest(user.getId())));
                 return resultAllUsers;
             }
 
