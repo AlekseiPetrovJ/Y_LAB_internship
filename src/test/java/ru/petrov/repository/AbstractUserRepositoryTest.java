@@ -3,13 +3,13 @@ package ru.petrov.repository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import ru.petrov.InitializationDb;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +27,7 @@ public abstract class AbstractUserRepositoryTest {
 
     @BeforeEach
     void set() {
+        InitializationDb.migrationForTest();
         user = new User("User", "password", Role.USER);
         userNew = new User("UserNew", "passwordnew", Role.USER);
         admin = new User("Admin", "password", Role.ADMIN);
@@ -35,48 +36,48 @@ public abstract class AbstractUserRepositoryTest {
     @org.junit.jupiter.api.Test
     @DisplayName("Добавление нового пользователя.")
     void save() {
-        user.setUuid(userRepository.save(user).get().getUuid());
-        assertEquals(Optional.of(user), userRepository.get(user.getUuid()));
-        userRepository.delete(user.getUuid());
+        user.setId(userRepository.save(user).get().getId());
+        assertEquals(Optional.of(user), userRepository.get(user.getId()));
+        userRepository.delete(user.getId());
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Изменение существующего пользователя.")
     void update() {
         Optional<User> actualUser = userRepository.save(user);
-        UUID uuidTemp = actualUser.get().getUuid();
-        userNew.setUuid(uuidTemp);
+        Integer idTemp = actualUser.get().getId();
+        userNew.setId(idTemp);
         userRepository.save(userNew);
-        assertEquals(Optional.of(userNew), userRepository.get(uuidTemp));
-        userRepository.delete(uuidTemp);
+        assertEquals(Optional.of(userNew), userRepository.get(idTemp));
+        userRepository.delete(idTemp);
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Проверка входных данных")
     void updateNotFound() {
-        assertEquals(Optional.empty(), userRepository.get(UUID.randomUUID()));
+        assertEquals(Optional.empty(), userRepository.get(500));
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Удаление существующего пользователя.")
     void delete() {
-        admin.setUuid(userRepository.save(admin).get().getUuid());
-        assertTrue(userRepository.delete(admin.getUuid()));
-        assertEquals(Optional.empty(), userRepository.get(admin.getUuid()));
+        admin.setId(userRepository.save(admin).get().getId());
+        assertTrue(userRepository.delete(admin.getId()));
+        assertEquals(Optional.empty(), userRepository.get(admin.getId()));
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Удаление не существующего пользователя")
     public void deleteNotFound() {
-        Assertions.assertFalse(userRepository.delete(UUID.randomUUID()));
+        Assertions.assertFalse(userRepository.delete(500));
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Получение существующего пользователя")
     void get() {
-        admin.setUuid(userRepository.save(admin).get().getUuid());
-        assertEquals(Optional.of(admin), userRepository.get(admin.getUuid()));
-        userRepository.delete(admin.getUuid());
+        admin.setId(userRepository.save(admin).get().getId());
+        assertEquals(Optional.of(admin), userRepository.get(admin.getId()));
+        userRepository.delete(admin.getId());
 
     }
 
@@ -84,20 +85,20 @@ public abstract class AbstractUserRepositoryTest {
     @org.junit.jupiter.api.Test
     @DisplayName("Получение не существущего пользователя")
     void getNotFound() {
-        assertEquals(Optional.empty(), userRepository.get(UUID.randomUUID()));
+        assertEquals(Optional.empty(), userRepository.get(500));
     }
 
     @org.junit.jupiter.api.Test
     @DisplayName("Получение списка всех пользователей")
     void getAll() {
-        userNew.setUuid(userRepository.save(userNew).get().getUuid());
-        admin.setUuid(userRepository.save(admin).get().getUuid());
-        user.setUuid(userRepository.save(user).get().getUuid());
+        userNew.setId(userRepository.save(userNew).get().getId());
+        admin.setId(userRepository.save(admin).get().getId());
+        user.setId(userRepository.save(user).get().getId());
         List<User> users = Arrays.asList(user, userNew, admin);
         assertTrue(users.containsAll(userRepository.getAll()));
-        userRepository.delete(userNew.getUuid());
-        userRepository.delete(admin.getUuid());
-        userRepository.delete(user.getUuid());
+        userRepository.delete(userNew.getId());
+        userRepository.delete(admin.getId());
+        userRepository.delete(user.getId());
 
     }
 }

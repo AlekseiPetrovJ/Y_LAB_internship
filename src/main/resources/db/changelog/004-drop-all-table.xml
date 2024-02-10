@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        logicalFilePath="db/changelog.xml">
+    <changeSet id="0-drop-all-table" author="aleksei" >
+        <sql>
+            DROP TABLE IF EXISTS measurement;
+            DROP TABLE IF EXISTS person;
+            DROP TABLE IF EXISTS person_role;
+            DROP TABLE IF EXISTS type_of_value;
+<!--            DROP TABLE IF EXISTS databasechangelog;-->
+<!--            DROP TABLE IF EXISTS databasechangeloglock;-->
+            DROP SEQUENCE IF EXISTS global_seq;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

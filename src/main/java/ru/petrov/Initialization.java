@@ -30,7 +30,6 @@ public class Initialization {
         authorizationService = new AuthorizationService(userRepository);
         typeOfValueRepository = new InMemoryTypeOfValueRepository();*/
 
-        LiquibaseExample.migration();
         userRepository = new JdbcUserRepository();
         typeOfValueRepository = new JdbcTypeOfValueRepository();
         measurementRepository = new JdbcMeasurementRepository(userRepository, typeOfValueRepository);
@@ -44,12 +43,13 @@ public class Initialization {
         typeOfValueRepository.save(gas);
         typeOfValueRepository.save(coldWater);
         typeOfValueRepository.save(hotWater);
-
-
-        User user = new User("db_user", "123", Role.USER);
-        User admin = new User("admin", "123", Role.ADMIN);
-        userRepository.save(user);
-        userRepository.save(admin);*/
+*/
+//
+//        User userT = new User("db_user", "123", Role.USER);
+//        User adminT = new User("db_admin", "123", Role.ADMIN);
+//
+//        userRepository.save(userT);
+//        userRepository.save(adminT);
 
         User user = userRepository.get("user").get();
         User admin = userRepository.get("admin").get();
@@ -59,14 +59,14 @@ public class Initialization {
         TypeOfValue gas = typeOfValueRepository.get("gas").get();
 
 
-        measurementRepository.save(new Measurement(hotWater, 2023, 11, user, 55.0), user.getUuid());
-        measurementRepository.save(new Measurement(hotWater, 2023, 12, user, 57.0), user.getUuid());
-        measurementRepository.save(new Measurement(coldWater, 2023, 11, user, 20.0), user.getUuid());
-        measurementRepository.save(new Measurement(coldWater, 2023, 12, user, 51.0), user.getUuid());
-        measurementRepository.save(new Measurement(coldWater, 2024, 1, user, 66.0), user.getUuid());
-        measurementRepository.save(new Measurement(coldWater, 2023, 11, admin, 14.0), admin.getUuid());
-        measurementRepository.save(new Measurement(hotWater, 2023, 12, admin, 34.0), admin.getUuid());
-        measurementRepository.save(new Measurement(gas, 2023, 11, user, 5.0), user.getUuid());
+        measurementRepository.save(new Measurement(hotWater, 2023, 11, user, 55.0), user.getId());
+        measurementRepository.save(new Measurement(hotWater, 2023, 12, user, 57.0), user.getId());
+        measurementRepository.save(new Measurement(coldWater, 2023, 11, user, 20.0), user.getId());
+        measurementRepository.save(new Measurement(coldWater, 2023, 12, user, 51.0), user.getId());
+        measurementRepository.save(new Measurement(coldWater, 2024, 1, user, 66.0), user.getId());
+        measurementRepository.save(new Measurement(coldWater, 2023, 11, admin, 14.0), admin.getId());
+        measurementRepository.save(new Measurement(hotWater, 2023, 12, admin, 34.0), admin.getId());
+        measurementRepository.save(new Measurement(gas, 2023, 11, user, 5.0), user.getId());
 
         currentUser = Optional.empty();
     }
