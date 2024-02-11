@@ -7,8 +7,13 @@ import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.UserRepository;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class JdbcMeasurementRepository extends  AbstractJdbc implements MeasurementRepository {
     private final UserRepository userRepository;

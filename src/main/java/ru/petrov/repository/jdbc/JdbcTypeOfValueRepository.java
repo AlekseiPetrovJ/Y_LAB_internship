@@ -3,8 +3,14 @@ package ru.petrov.repository.jdbc;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.repository.TypeOfValueRepository;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfValueRepository {
     @Override
@@ -54,7 +60,6 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String unitOfMeasurement = resultSet.getString("unit_of_measurement");
@@ -75,7 +80,6 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
 
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 Integer typeId = resultSet.getInt("type_id");
                 String typeName = resultSet.getString("name");
@@ -96,7 +100,6 @@ public class JdbcTypeOfValueRepository extends AbstractJdbc implements TypeOfVal
         try (Connection con = getConnection();
              Statement statement = con.createStatement()) {
             ResultSet resultSet = statement.executeQuery(selectSql);
-
             while (resultSet.next()) {
                 Integer typeId = resultSet.getInt("type_id");
                 String name = resultSet.getString("name");

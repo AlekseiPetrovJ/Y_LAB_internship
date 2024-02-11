@@ -6,7 +6,9 @@ import ru.petrov.model.Role;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.petrov.Initialization.*;
+import static ru.petrov.Initialization.getCurrentUser;
+import static ru.petrov.Initialization.measurementRepository;
+import static ru.petrov.Initialization.userRepository;
 
 public class ActualMeasurementsPage {
     public static List<Measurement> getActualMeasurements() {
@@ -20,12 +22,8 @@ public class ActualMeasurementsPage {
                         resultAllUsers.addAll(measurementRepository.getLatest(user.getId())));
                 return resultAllUsers;
             }
-
         } else {
             return new ArrayList<>();
         }
-
     }
-
-
 }

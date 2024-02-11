@@ -4,8 +4,16 @@ import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     @Override
@@ -23,6 +31,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
                     registered = ?
                     WHERE person_id=?;""";
         }
+
         try (Connection con = getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
 
@@ -51,7 +60,6 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
 
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
-
         } catch (SQLException e) {
             //TODO перенести в лог
             System.out.println("SQL exception: " + e.getMessage());
@@ -68,7 +76,6 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String password = resultSet.getString("password");
@@ -91,7 +98,6 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
 
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 Integer personId = resultSet.getInt("person_id");
                 String password = resultSet.getString("password");
@@ -112,7 +118,6 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
         try (Connection con = getConnection();
              Statement statement = con.createStatement()) {
             ResultSet resultSet = statement.executeQuery(selectSql);
-
             while (resultSet.next()) {
                 Integer personId = resultSet.getInt("person_id");
                 String password = resultSet.getString("password");

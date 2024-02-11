@@ -19,8 +19,10 @@ public class InitializationDb extends AbstractJdbc {
             Liquibase liquibase =
                     new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
             liquibase.update();
+            //TODO перенести в лог
             System.out.printf("Migration is completed successfully");
         } catch (SQLException | LiquibaseException e) {
+            //TODO перенести в лог
             System.out.println("SQL Exception in migration " + e.getMessage());
         }
     }
@@ -32,8 +34,10 @@ public class InitializationDb extends AbstractJdbc {
             liquibase.Liquibase liquibase =
                     new liquibase.Liquibase("db/changelog/changelog-for-test.xml", new ClassLoaderResourceAccessor(), database);
             liquibase.update();
+            //TODO перенести в лог
             System.out.printf("Migration is completed successfully");
         } catch (SQLException | LiquibaseException e) {
+            //TODO перенести в лог
             System.out.println("SQL Exception in migration " + e.getMessage());
         }
     }

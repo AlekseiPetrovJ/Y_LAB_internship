@@ -6,5 +6,4 @@ class JdbcUserRepositoryTest extends AbstractUserRepositoryTest {
     {
         setUserRepository(new JdbcUserRepository());
     }
-
 }
