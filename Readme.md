@@ -21,6 +21,37 @@ password: 123
 
 Возможности:
 
+## Регистрация пользователя
+### Request
+
+`POST /measurement/user/add` 
+
+        curl --location 'http://localhost:8080/measurement/user/add' \
+        --header 'Content-Type: application/json' \
+        --data '{
+        "name": "Fedor",
+        "password": "qwerty7"
+        }'
+
+### Response
+    Content-Type: application.json 
+    Status: 201 OK
+
+    {"name":"Fedor","id":100004}
+
+## Получение пользователя
+### Request
+
+`GET /measurement/user/<id>`
+
+        curl --location 'http://localhost:8080/measurement/user/100004'
+
+### Response
+    Content-Type: application.json 
+    Status: 200 OK
+
+    {"name":"Fedor","id":100004}
+
 - регистрация пользователя (Любой пользователь)
 - авторизация пользователя  (Неавторизованный пользователь)
 - просмотр существующих типов показаний (Автозированный пользователь)

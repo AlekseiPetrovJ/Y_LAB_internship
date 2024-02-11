@@ -5,8 +5,11 @@ import java.time.LocalDateTime;
 public class User extends AbstractNamedEntity {
     private String password;
     private Role role;
-
     private LocalDateTime registered;
+
+    public User() {
+        super(null, null);
+    }
 
     public User(Integer id, String name, String password, Role role, LocalDateTime registered) {
         super(id, name);
@@ -45,7 +48,4 @@ public class User extends AbstractNamedEntity {
     public void setRegistered(LocalDateTime registered) {
         this.registered = registered;
     }
-
-
-
 }
