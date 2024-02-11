@@ -14,13 +14,13 @@ public class JdbcConnector {
             connection = DriverManager.getConnection(url, db_user, pass);
         } catch (SQLException e) {
             //TODO перенести в лог
-            System.out.println("not geted connection " + e.getMessage());
+            System.out.println("not got connection " + e.getMessage());
         }
         try {
             connection = DriverManager.getConnection(url, db_user, pass);
         } catch (SQLException e) {
             //TODO перенести в лог
-            System.out.println("not geted connection" + e.getMessage());
+            System.out.println("not got connection" + e.getMessage());
             throw new RuntimeException(e);
         }
         return connection;

@@ -97,6 +97,5 @@ public abstract class AbstractTypeOfValueRepositoryTest {
         assertTrue(users.containsAll(typeOfValueRepository.getAll()));
         typeOfValueRepository.delete(hotWater.getId());
         typeOfValueRepository.delete(coldWater.getId());
-
     }
 }

@@ -27,9 +27,8 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
 
     @Override
     public Optional<Measurement> save(Measurement measurement, Integer userId) {
-        String query;
         if (measurement.isNew()) {
-            query = "INSERT INTO measurement (person_id, measurement_value, type_id, reg_year, reg_month) " +
+            String query = "INSERT INTO measurement (person_id, measurement_value, type_id, reg_year, reg_month) " +
                     "VALUES (?, ?, ?, ?, ?);";
 
             try (Connection con = JdbcConnector.getConnection();
@@ -45,7 +44,6 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
                     measurement.setUser(user);
                     return Optional.of(measurement);
                 }
-
             } catch (SQLException e) {
                 //TODO перенести в лог
                 System.out.println("SQL exception: " + e.getMessage());
@@ -54,7 +52,6 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
         } else {
             return Optional.empty();
         }
-
         return Optional.empty();
     }
 

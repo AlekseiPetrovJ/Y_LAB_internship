@@ -79,9 +79,7 @@ public abstract class AbstractUserRepositoryTest {
         admin.setId(userRepository.save(admin).get().getId());
         assertEquals(Optional.of(admin), userRepository.get(admin.getId()));
         userRepository.delete(admin.getId());
-
     }
-
 
     @Test
     @DisplayName("Получение не существущего пользователя")
@@ -100,6 +98,5 @@ public abstract class AbstractUserRepositoryTest {
         userRepository.delete(userNew.getId());
         userRepository.delete(admin.getId());
         userRepository.delete(user.getId());
-
     }
 }
