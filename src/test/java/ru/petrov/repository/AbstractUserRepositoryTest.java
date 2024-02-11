@@ -3,6 +3,7 @@ package ru.petrov.repository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import ru.petrov.InitializationDb;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
@@ -15,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractUserRepositoryTest {
-    public static UserRepository userRepository;
+    public UserRepository userRepository;
 
-    static User user;
-    static User userNew;
-    static User admin;
+    User user;
+    User userNew;
+    User admin;
 
-    public static void setUserRepository(UserRepository userRepository) {
-        AbstractUserRepositoryTest.userRepository = userRepository;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @BeforeEach
@@ -33,7 +34,7 @@ public abstract class AbstractUserRepositoryTest {
         admin = new User("Admin", "password", Role.ADMIN);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Добавление нового пользователя.")
     void save() {
         user.setId(userRepository.save(user).get().getId());
@@ -41,7 +42,7 @@ public abstract class AbstractUserRepositoryTest {
         userRepository.delete(user.getId());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Изменение существующего пользователя.")
     void update() {
         Optional<User> actualUser = userRepository.save(user);
@@ -52,13 +53,13 @@ public abstract class AbstractUserRepositoryTest {
         userRepository.delete(idTemp);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Проверка входных данных")
     void updateNotFound() {
         assertEquals(Optional.empty(), userRepository.get(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Удаление существующего пользователя.")
     void delete() {
         admin.setId(userRepository.save(admin).get().getId());
@@ -66,13 +67,13 @@ public abstract class AbstractUserRepositoryTest {
         assertEquals(Optional.empty(), userRepository.get(admin.getId()));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Удаление не существующего пользователя")
     public void deleteNotFound() {
         Assertions.assertFalse(userRepository.delete(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение существующего пользователя")
     void get() {
         admin.setId(userRepository.save(admin).get().getId());
@@ -82,13 +83,13 @@ public abstract class AbstractUserRepositoryTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение не существущего пользователя")
     void getNotFound() {
         assertEquals(Optional.empty(), userRepository.get(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение списка всех пользователей")
     void getAll() {
         userNew.setId(userRepository.save(userNew).get().getId());

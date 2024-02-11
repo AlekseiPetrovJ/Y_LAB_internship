@@ -3,6 +3,7 @@ package ru.petrov.repository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import ru.petrov.InitializationDb;
 import ru.petrov.model.TypeOfValue;
 
@@ -14,15 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractTypeOfValueRepositoryTest {
-    public static TypeOfValueRepository typeOfValueRepository;
+    public TypeOfValueRepository typeOfValueRepository;
 
-    static TypeOfValue hotWater;
-    static TypeOfValue coldWater;
-    static TypeOfValue coldWaterNew;
+    TypeOfValue hotWater;
+    TypeOfValue coldWater;
+    TypeOfValue coldWaterNew;
 
 
-    public static void setTypeOfValueRepository(TypeOfValueRepository typeOfValueRepository) {
-        AbstractTypeOfValueRepositoryTest.typeOfValueRepository = typeOfValueRepository;
+    public void setTypeOfValueRepository(TypeOfValueRepository typeOfValueRepository) {
+        this.typeOfValueRepository = typeOfValueRepository;
     }
 
     @BeforeEach
@@ -33,7 +34,7 @@ public abstract class AbstractTypeOfValueRepositoryTest {
         coldWaterNew = new TypeOfValue("very cold water", "m3");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Добавление нового типа измерения.")
     void save() {
         hotWater.setId(typeOfValueRepository.save(hotWater).get().getId());
@@ -41,7 +42,7 @@ public abstract class AbstractTypeOfValueRepositoryTest {
         typeOfValueRepository.delete(hotWater.getId());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Изменение существующего типа измерения.")
     void update() {
         Optional<TypeOfValue> actualType = typeOfValueRepository.save(coldWater);
@@ -52,13 +53,13 @@ public abstract class AbstractTypeOfValueRepositoryTest {
         typeOfValueRepository.delete(idTemp);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Попытка получить отсутствующие данные.")
     void updateNotFound() {
         assertEquals(Optional.empty(), typeOfValueRepository.get(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Удаление существующего типа измерения.")
     void delete() {
         hotWater.setId(typeOfValueRepository.save(hotWater).get().getId());
@@ -66,13 +67,13 @@ public abstract class AbstractTypeOfValueRepositoryTest {
         assertEquals(Optional.empty(), typeOfValueRepository.get(hotWater.getId()));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Удаление не существующего типа измерения.")
     public void deleteNotFound() {
         Assertions.assertFalse(typeOfValueRepository.delete(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение существующего типа измерения")
     void get() {
         hotWater.setId(typeOfValueRepository.save(hotWater).get().getId());
@@ -81,13 +82,13 @@ public abstract class AbstractTypeOfValueRepositoryTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение не существущего типа измерения")
     void getNotFound() {
         assertEquals(Optional.empty(), typeOfValueRepository.get(500));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @DisplayName("Получение списка всех измерений")
     void getAll() {
         hotWater.setId(typeOfValueRepository.save(hotWater).get().getId());

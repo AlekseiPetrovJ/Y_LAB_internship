@@ -2,7 +2,9 @@ package ru.petrov.consoleApp;
 
 import ru.petrov.model.Role;
 
-import static ru.petrov.Initialization.*;
+import static ru.petrov.Initialization.consoleHelper;
+import static ru.petrov.Initialization.getCurrentUser;
+import static ru.petrov.Initialization.typeOfValueRepository;
 
 public class ViewTypesOfValuePage {
     public static void view() {
