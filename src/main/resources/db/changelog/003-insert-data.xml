@@ -10,6 +10,7 @@
             ALTER SEQUENCE global_seq RESTART WITH 100000;
         </sql>
     </changeSet>
+
     <changeSet id="1-insert-person_role" author="aleksei">
         <insert tableName="person_role">
             <column name="role_id" valueNumeric="100000"/>
@@ -51,6 +52,12 @@
             <column name="password" value="123"/>
             <column name="role_id" valueNumeric="100001"/>
         </insert>
+
+        <insert tableName="person">
+            <column name="name" value="service"/>
+            <column name="password" value=""/>
+            <column name="role_id" valueNumeric="100001"/>
+        </insert>
     </changeSet>
 
     <changeSet id="4-insert-log_level" author="aleksei">
@@ -73,6 +80,5 @@
             <column name="level_id" valueNumeric="100003"/>
             <column name="log_level" value="DEBUG"/>
         </insert>
-
     </changeSet>
 </databaseChangeLog>

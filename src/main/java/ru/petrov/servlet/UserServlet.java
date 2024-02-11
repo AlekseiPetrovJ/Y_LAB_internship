@@ -9,10 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import ru.petrov.InitializationDb;
+import ru.petrov.annotations.Loggable;
 import ru.petrov.controller.UserController;
 import ru.petrov.dto.UserDto;
 import ru.petrov.dto.UserInDto;
+import ru.petrov.model.Log;
+import ru.petrov.model.LogLevel;
+import ru.petrov.repository.LogRepository;
+import ru.petrov.repository.jdbc.JdbcLogRepository;
 import ru.petrov.repository.jdbc.JdbcUserRepository;
+import ru.petrov.util.NotFoundException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,12 +27,17 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
     private ObjectMapper objectMapper;
     private UserController userController;
+    private LogRepository logRepository;
+    private JdbcUserRepository jdbcUserRepository;
+
 
     @Override
     public void init() {
         this.objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        userController = new UserController(new ModelMapper(), new JdbcUserRepository());
+        jdbcUserRepository = new JdbcUserRepository();
+        userController = new UserController(new ModelMapper(), jdbcUserRepository);
+        logRepository = new JdbcLogRepository(jdbcUserRepository);
         InitializationDb.migration();
     }
 
@@ -43,14 +54,16 @@ public class UserServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_CREATED);
             resp.sendRedirect(req.getContextPath() + "/user/"+saveUser.getId());
         } else {
-            System.out.println("user null");
+            logRepository.save(new Log(LogLevel.WARN,
+                    jdbcUserRepository.get("service")
+                    .orElseThrow(() -> new NotFoundException("Not found entity with name: service")),
+                    "Произошла ошибка при добавлении пользователя " + userInDto.toString()));
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().println("something wrong ");
-            //TODO перенести в лог
-            System.out.println("saveUser from UserDto=" + userInDto + " is null ");
         }
     }
 
+    @Loggable
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println(req.getRequestURI());
