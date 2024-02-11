@@ -52,4 +52,27 @@
             <column name="role_id" valueNumeric="100001"/>
         </insert>
     </changeSet>
+
+    <changeSet id="4-insert-log_level" author="aleksei">
+        <insert tableName="log_level">
+            <column name="level_id" valueNumeric="100000"/>
+            <column name="log_level" value="FATAL"/>
+        </insert>
+
+        <insert tableName="log_level">
+            <column name="level_id" valueNumeric="100001"/>
+            <column name="log_level" value="WARN"/>
+        </insert>
+
+        <insert tableName="log_level">
+            <column name="level_id" valueNumeric="100002"/>
+            <column name="log_level" value="INFO"/>
+        </insert>
+
+        <insert tableName="log_level">
+            <column name="level_id" valueNumeric="100003"/>
+            <column name="log_level" value="DEBUG"/>
+        </insert>
+
+    </changeSet>
 </databaseChangeLog>

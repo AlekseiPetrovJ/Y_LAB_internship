@@ -96,4 +96,44 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="6-createTable-log_level" author="aleksei">
+        <createTable tableName="log_level" >
+            <column name="level_id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="log_level" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7-createTable-application_log" author="aleksei">
+        <createTable tableName="application_log">
+            <column name="log_id" type="INTEGER" defaultValueComputed="nextval('global_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="registered" type="TIMESTAMP" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="level_id" type="INTEGER">
+                <constraints nullable="false" foreignKeyName="log_level"
+                             references="log_level(level_id)"/>
+            </column>
+            <column name="person_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="log_value" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseColumnNames="person_id"
+                baseTableName="application_log"
+                constraintName="fk_log_person"
+                referencedColumnNames="person_id"
+                referencedTableName="person"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+
 </databaseChangeLog>
