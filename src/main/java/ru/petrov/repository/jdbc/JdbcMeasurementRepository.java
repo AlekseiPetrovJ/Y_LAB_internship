@@ -6,6 +6,7 @@ import ru.petrov.model.User;
 import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.UserRepository;
+import ru.petrov.util.JdbcConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcMeasurementRepository extends  AbstractJdbc implements MeasurementRepository {
+public class JdbcMeasurementRepository implements MeasurementRepository {
     private final UserRepository userRepository;
     private final TypeOfValueRepository typeOfValueRepository;
 
@@ -31,7 +32,7 @@ public class JdbcMeasurementRepository extends  AbstractJdbc implements Measurem
             query = "INSERT INTO measurement (person_id, measurement_value, type_id, reg_year, reg_month) " +
                     "VALUES (?, ?, ?, ?, ?);";
 
-            try (Connection con = getConnection();
+            try (Connection con = JdbcConnector.getConnection();
                  PreparedStatement preparedStatement = con.prepareStatement(query)) {
 
                 User user = userRepository.get(userId).get();
@@ -68,7 +69,7 @@ public class JdbcMeasurementRepository extends  AbstractJdbc implements Measurem
                 "WHERE rn = 1;";
 
         List<Measurement> measurementsLatest = new ArrayList<>();
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
             preparedStatement.setInt(1, userId);
@@ -99,7 +100,7 @@ public class JdbcMeasurementRepository extends  AbstractJdbc implements Measurem
                 "FROM measurement " +
                 "WHERE reg_year=? AND reg_month=? AND measurement.person_id=?";
         List<Measurement> measurementsMonth = new ArrayList<>();
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
             preparedStatement.setInt(1, year);
@@ -130,7 +131,7 @@ public class JdbcMeasurementRepository extends  AbstractJdbc implements Measurem
                 "WHERE measurement.person_id=? " +
                 "ORDER BY reg_year, reg_month";
         List<Measurement> measurementsAll = new ArrayList<>();
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
             preparedStatement.setInt(1, userId);

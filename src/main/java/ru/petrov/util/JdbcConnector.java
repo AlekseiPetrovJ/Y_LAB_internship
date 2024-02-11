@@ -1,16 +1,14 @@
-package ru.petrov.repository.jdbc;
+package ru.petrov.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
-public class AbstractJdbc {
+public class JdbcConnector {
     public static Connection getConnection()  {
-        ResourceBundle resource = ResourceBundle.getBundle("db/database");
-        String url = resource.getString("url");
-        String db_user = resource.getString("db_user");
-        String pass = resource.getString("password");
+        String url = PropertyUtil.getProperty("db/database", "url" );
+        String db_user = PropertyUtil.getProperty("db/database", "db_user" );
+        String pass = PropertyUtil.getProperty("db/database", "password" );
         Connection connection;
         try {
             connection = DriverManager.getConnection(url, db_user, pass);

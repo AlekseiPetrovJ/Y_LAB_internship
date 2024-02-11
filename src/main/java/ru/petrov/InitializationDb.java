@@ -6,14 +6,14 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import ru.petrov.repository.jdbc.AbstractJdbc;
+import ru.petrov.util.JdbcConnector;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class InitializationDb extends AbstractJdbc {
+public class InitializationDb {
     public static void migration(){
-        try (Connection connection = getConnection()) {
+        try (Connection connection = JdbcConnector.getConnection()) {
             Database database =
                     DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase =
@@ -28,7 +28,7 @@ public class InitializationDb extends AbstractJdbc {
     }
 
     public static void migrationForTest(){
-        try (Connection connection = getConnection()) {
+        try (Connection connection = JdbcConnector.getConnection()) {
             Database database =
                     DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             liquibase.Liquibase liquibase =

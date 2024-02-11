@@ -3,6 +3,7 @@ package ru.petrov.repository.jdbc;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
+import ru.petrov.util.JdbcConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
+public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> save(User user) {
         String query;
@@ -32,7 +33,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
                     WHERE person_id=?;""";
         }
 
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
 
             preparedStatement.setString(1, user.getName());
@@ -55,7 +56,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     @Override
     public boolean delete(Integer id) {
         String query = "delete from person where person_id=?";
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
@@ -71,7 +72,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     public Optional<User> get(Integer id) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where person_id=?";
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
             preparedStatement.setInt(1, id);
@@ -93,7 +94,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     public Optional<User> get(String name) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where name=?";
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
 
             preparedStatement.setString(1, name);
@@ -115,7 +116,7 @@ public class JdbcUserRepository extends AbstractJdbc implements UserRepository {
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id ";
-        try (Connection con = getConnection();
+        try (Connection con = JdbcConnector.getConnection();
              Statement statement = con.createStatement()) {
             ResultSet resultSet = statement.executeQuery(selectSql);
             while (resultSet.next()) {
