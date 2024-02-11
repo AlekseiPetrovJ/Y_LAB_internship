@@ -1,5 +1,7 @@
 package ru.petrov.util;
 
+import ru.petrov.annotations.LoggableWithDuration;
+
 import java.util.ResourceBundle;
     public class PropertyUtil {
         /**
@@ -27,6 +29,7 @@ import java.util.ResourceBundle;
          * @param baseName - name of resource containing the necessary keys
          * @return ResourceBundle resources
          */
+        @LoggableWithDuration
         public static ResourceBundle getResourceBundle(String baseName){
             return ResourceBundle.getBundle(baseName);
         }

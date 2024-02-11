@@ -1,5 +1,6 @@
 package ru.petrov.repository.jdbc;
 
+import ru.petrov.annotations.Loggable;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
@@ -91,6 +92,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @Loggable
     public Optional<User> get(String name) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where name=?";
