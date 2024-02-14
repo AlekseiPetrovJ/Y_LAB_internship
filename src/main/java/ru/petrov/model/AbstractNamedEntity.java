@@ -1,12 +1,10 @@
 package ru.petrov.model;
 
-import java.util.UUID;
-
 public abstract class AbstractNamedEntity extends AbstractEntity {
     protected String name;
 
-    public AbstractNamedEntity(UUID uuid, String name) {
-        super(uuid);
+    public AbstractNamedEntity(Integer id, String name) {
+        super(id);
         this.name = name;
     }
 
@@ -20,7 +18,7 @@ public abstract class AbstractNamedEntity extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format("%s. UUID: %s. Name: %s.", getClass().getSimpleName(), uuid, name);
+        return String.format("%s. ID: %s. Name: %s.", getClass().getSimpleName(), id, name);
     }
 
     @Override
@@ -29,7 +27,7 @@ public abstract class AbstractNamedEntity extends AbstractEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         AbstractNamedEntity that = (AbstractNamedEntity) o;
-        return name.equals(that.name) && uuid.equals(that.uuid);
+        return name.equals(that.name) && id.equals(that.id);
     }
 
 }

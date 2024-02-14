@@ -6,10 +6,13 @@ import ru.petrov.repository.TypeOfValueRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static ru.petrov.model.AbstractEntity.START_SEQ;
 
 public class InMemoryTypeOfValueRepository implements TypeOfValueRepository {
     private final List<TypeOfValue> typeOfValues = new ArrayList<>();
+    private final AtomicInteger counter = new AtomicInteger(START_SEQ);
 
     public InMemoryTypeOfValueRepository() {
     }
@@ -17,23 +20,23 @@ public class InMemoryTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public Optional<TypeOfValue> save(TypeOfValue typeOfValue) {
         if (typeOfValue.isNew() && get(typeOfValue.getName()).isEmpty()) {
-            typeOfValue.setUuid(UUID.randomUUID());
+            typeOfValue.setId(counter.incrementAndGet());
             typeOfValues.add(typeOfValue);
-            return get(typeOfValue.getUuid());
+            return get(typeOfValue.getId());
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        return typeOfValues.remove(get(uuid).
+    public boolean delete(Integer id) {
+        return typeOfValues.remove(get(id).
                 orElse(null));
     }
 
     @Override
-    public Optional<TypeOfValue> get(UUID uuid) {
-        return typeOfValues.stream().filter(type -> type.getUuid().equals(uuid)).findAny();
+    public Optional<TypeOfValue> get(Integer id) {
+        return typeOfValues.stream().filter(type -> type.getId().equals(id)).findAny();
     }
 
     @Override

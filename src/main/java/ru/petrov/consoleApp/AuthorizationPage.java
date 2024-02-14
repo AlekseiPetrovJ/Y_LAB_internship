@@ -5,7 +5,9 @@ import ru.petrov.model.User;
 
 import java.util.Optional;
 
-import static ru.petrov.Initialization.*;
+import static ru.petrov.Initialization.consoleHelper;
+import static ru.petrov.Initialization.getCurrentUser;
+import static ru.petrov.Initialization.setCurrentUser;
 
 public class AuthorizationPage {
     public static void login() {
@@ -21,7 +23,7 @@ public class AuthorizationPage {
             System.out.print("\nТакое имя и пароль не найдены в базе.\n\n");
         } else {
             System.out.printf("Пользователь " + authorization.get().getName() + " - авторизован.\n");
-            Initialization.setCurrentUser(authorization);
+            setCurrentUser(authorization);
         }
     }
 
