@@ -1,5 +1,6 @@
 package ru.petrov.repository.jdbc;
 
+import org.springframework.stereotype.Repository;
 import ru.petrov.annotations.Loggable;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> save(User user) {
