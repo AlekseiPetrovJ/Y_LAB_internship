@@ -9,7 +9,7 @@ public class UserInDto {
     private String name;
     @NotEmpty(message = "Id not might be empty")
     private Integer id;
-    @NotEmpty(message = "Id not might be empty")
+    @NotEmpty(message = "Password not might be empty")
     private String password;
 
     public String getName() {

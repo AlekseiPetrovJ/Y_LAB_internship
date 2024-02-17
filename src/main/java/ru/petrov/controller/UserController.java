@@ -45,9 +45,12 @@ public class UserController {
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserInDto UserInDto,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserInDto userInDto,
                                              BindingResult bindingResult) {
-        User user = mapper.map(UserInDto, User.class);
+        User user = mapper.map(userInDto, User.class);
+        if (user.getName()!=null){
+            user.setName(user.getName().trim());
+        }
         userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {

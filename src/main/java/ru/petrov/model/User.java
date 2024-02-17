@@ -1,8 +1,11 @@
 package ru.petrov.model;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 public class User extends AbstractNamedEntity {
+    @NotEmpty(message = "Password not might be empty")
     private String password;
     private Role role;
     private LocalDateTime registered;
