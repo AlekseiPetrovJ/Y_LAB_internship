@@ -1,5 +1,6 @@
 package ru.petrov.repository.jdbc;
 
+import org.springframework.stereotype.Repository;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.util.JdbcConnector;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public Optional<TypeOfValue> save(TypeOfValue typeOfValue) {
@@ -113,6 +114,4 @@ public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
         }
         return types;
     }
-
-
 }
