@@ -1,28 +1,27 @@
 package ru.petrov.repository.jdbc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.petrov.model.Measurement;
-import ru.petrov.model.TypeOfValue;
 import ru.petrov.model.User;
 import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.JdbcConnector;
+import ru.petrov.util.mapper.MeasurementMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class JdbcMeasurementRepository implements MeasurementRepository {
+    private final JdbcTemplate jdbcTemplate;
+    private final MeasurementMapper measurementMapper;
     private final UserRepository userRepository;
-    private final TypeOfValueRepository typeOfValueRepository;
 
-    public JdbcMeasurementRepository(UserRepository userRepository, TypeOfValueRepository typeOfValueRepository) {
+    @Autowired
+    public JdbcMeasurementRepository(JdbcTemplate jdbcTemplate, UserRepository userRepository, TypeOfValueRepository typeRepository, MeasurementMapper measurementMapper) {
+        this.jdbcTemplate = jdbcTemplate;
         this.userRepository = userRepository;
-        this.typeOfValueRepository = typeOfValueRepository;
+        this.measurementMapper = measurementMapper;
     }
 
     @Override
@@ -30,27 +29,16 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
         if (measurement.isNew()) {
             String query = "INSERT INTO measurement (person_id, measurement_value, type_id, reg_year, reg_month) " +
                     "VALUES (?, ?, ?, ?, ?);";
-
-            try (Connection con = JdbcConnector.getConnection();
-                 PreparedStatement preparedStatement = con.prepareStatement(query)) {
-
+            if (jdbcTemplate.update(query,
+                    userId,
+                    measurement.getValue(),
+                    measurement.getTypeOfValue().getId(),
+                    measurement.getYear(),
+                    measurement.getMonth()) > 0) {
                 User user = userRepository.get(userId).get();
-                preparedStatement.setInt(1, userId);
-                preparedStatement.setDouble(2, measurement.getValue());
-                preparedStatement.setInt(3, measurement.getTypeOfValue().getId());
-                preparedStatement.setInt(4, measurement.getYear());
-                preparedStatement.setInt(5, measurement.getMonth());
-                if (preparedStatement.executeUpdate() > 0) {
-                    measurement.setUser(user);
-                    return Optional.of(measurement);
-                }
-            } catch (SQLException e) {
-                //TODO перенести в лог
-                System.out.println("SQL exception: " + e.getMessage());
-                return Optional.empty();
+                measurement.setUser(user);
+                return Optional.of(measurement);
             }
-        } else {
-            return Optional.empty();
         }
         return Optional.empty();
     }
@@ -64,31 +52,7 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
                 "    FROM measurement WHERE person_id=? " +
                 ") AS subquery " +
                 "WHERE rn = 1;";
-
-        List<Measurement> measurementsLatest = new ArrayList<>();
-        try (Connection con = JdbcConnector.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
-
-            preparedStatement.setInt(1, userId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Integer measurementId = resultSet.getInt("measurement_id");
-                Integer typeId = resultSet.getInt("type_id");
-                int year = resultSet.getInt("reg_year");
-                int month = resultSet.getInt("reg_month");
-                User user = userRepository.get(userId).get();
-                TypeOfValue type = typeOfValueRepository.get(typeId).get();
-                double measurement_value = resultSet.getDouble("measurement_value");
-                measurementsLatest.add(new Measurement(measurementId, type, year, month, user, measurement_value));
-            }
-        } catch (SQLException e) {
-            //TODO перенести в лог
-            System.out.println("SQL exception: " + e.getMessage());
-            return measurementsLatest;
-        }
-        return measurementsLatest;
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementMapper);
     }
 
     @Override
@@ -96,29 +60,7 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
         String selectSql = "SELECT measurement_id, measurement_value, measurement.type_id " +
                 "FROM measurement " +
                 "WHERE reg_year=? AND reg_month=? AND measurement.person_id=?";
-        List<Measurement> measurementsMonth = new ArrayList<>();
-        try (Connection con = JdbcConnector.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
-
-            preparedStatement.setInt(1, year);
-            preparedStatement.setInt(2, month);
-            preparedStatement.setInt(3, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Integer measurementId = resultSet.getInt("measurement_id");
-                double measurement_value = resultSet.getDouble("measurement_value");
-                Integer typeId = resultSet.getInt("type_id");
-                User user = userRepository.get(userId).get();
-                TypeOfValue type = typeOfValueRepository.get(typeId).get();
-                measurementsMonth.add(new Measurement(measurementId, type, year, month, user, measurement_value));
-            }
-        } catch (SQLException e) {
-            //TODO перенести в лог
-            System.out.println("SQL exception: " + e.getMessage());
-            return measurementsMonth;
-        }
-        return measurementsMonth;
+        return jdbcTemplate.query(selectSql, new Object[]{year, month, userId}, measurementMapper);
     }
 
     @Override
@@ -127,28 +69,6 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
                 "FROM measurement  " +
                 "WHERE measurement.person_id=? " +
                 "ORDER BY reg_year, reg_month";
-        List<Measurement> measurementsAll = new ArrayList<>();
-        try (Connection con = JdbcConnector.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(selectSql)) {
-
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Integer measurementId = resultSet.getInt("measurement_id");
-                Integer typeId = resultSet.getInt("type_id");
-                int year = resultSet.getInt("reg_year");
-                int month = resultSet.getInt("reg_month");
-                User user = userRepository.get(userId).get();
-                TypeOfValue type = typeOfValueRepository.get(typeId).get();
-                double measurement_value = resultSet.getDouble("measurement_value");
-                measurementsAll.add(new Measurement(measurementId, type, year, month, user, measurement_value));
-            }
-        } catch (SQLException e) {
-            //TODO перенести в лог
-            System.out.println("SQL exception: " + e.getMessage());
-            return measurementsAll;
-        }
-        return measurementsAll;
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementMapper);
     }
 }
