@@ -3,10 +3,12 @@ package ru.petrov.aspect;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Aspect
+@Component
 public class LoggingAspect {
     @Around("execution(* *(..)) && @annotation(ru.petrov.annotations.Loggable)")
     public Object log(ProceedingJoinPoint proceedingJoinPoint) {
