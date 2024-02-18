@@ -3,8 +3,8 @@ package ru.petrov.repository.inMemory;
 import ru.petrov.model.Measurement;
 import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.EntityNotFoundException;
-import ru.petrov.util.NotUniqueValueException;
+import ru.petrov.util.exception.EntityNotFoundException;
+import ru.petrov.util.exception.NotUniqueValueException;
 
 import java.util.ArrayList;
 import java.util.Comparator;

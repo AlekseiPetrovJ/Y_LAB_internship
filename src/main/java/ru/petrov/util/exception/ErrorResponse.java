@@ -1,4 +1,4 @@
-package ru.petrov.util;
+package ru.petrov.util.exception;
 
 public class ErrorResponse {
     private String message;

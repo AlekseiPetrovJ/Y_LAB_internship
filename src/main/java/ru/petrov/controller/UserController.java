@@ -15,10 +15,10 @@ import ru.petrov.dto.UserInDto;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.service.UserService;
-import ru.petrov.util.EntityNotCreatedException;
-import ru.petrov.util.EntityNotFoundException;
-import ru.petrov.util.ErrorResponse;
-import ru.petrov.util.UserValidator;
+import ru.petrov.util.exception.EntityNotCreatedException;
+import ru.petrov.util.exception.EntityNotFoundException;
+import ru.petrov.util.exception.ErrorResponse;
+import ru.petrov.util.validator.UserValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;

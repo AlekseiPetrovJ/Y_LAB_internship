@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.petrov.annotations.Loggable;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.UserMapper;
+import ru.petrov.util.mapper.UserMapper;
 
 import java.sql.Timestamp;
 import java.util.List;

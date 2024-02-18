@@ -1,4 +1,4 @@
-package ru.petrov.util;
+package ru.petrov.util.validator;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.EntityNotFoundException;
+import ru.petrov.util.exception.EntityNotFoundException;
 
 import java.util.Optional;
 

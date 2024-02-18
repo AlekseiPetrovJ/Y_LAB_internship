@@ -1,4 +1,4 @@
-package ru.petrov.util;
+package ru.petrov.util.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import ru.petrov.model.Role;

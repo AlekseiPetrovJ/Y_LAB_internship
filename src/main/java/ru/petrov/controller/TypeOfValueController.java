@@ -13,10 +13,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.petrov.dto.TypeOfValueDto;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.service.TypeOfValueService;
-import ru.petrov.util.EntityNotCreatedException;
-import ru.petrov.util.EntityNotFoundException;
-import ru.petrov.util.ErrorResponse;
-import ru.petrov.util.TypeOfValueValidator;
+import ru.petrov.util.exception.EntityNotCreatedException;
+import ru.petrov.util.exception.EntityNotFoundException;
+import ru.petrov.util.exception.ErrorResponse;
+import ru.petrov.util.validator.TypeOfValueValidator;
 
 import java.util.List;
 import java.util.Optional;
