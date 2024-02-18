@@ -1,5 +1,6 @@
 package ru.petrov.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.petrov.repository.TypeOfValueRepository;
+import ru.petrov.repository.UserRepository;
+import ru.petrov.util.mapper.LogMapper;
+import ru.petrov.util.mapper.MeasurementMapper;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -53,7 +58,25 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource());
+        liquibase.setChangeLog("classpath:db/changelog/changelog.xml");
+        return liquibase;
+    }
+
+    @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public LogMapper logMapper(UserRepository userRepository){
+        return new LogMapper(userRepository);
+    }
+
+    @Bean
+    public MeasurementMapper measurementMapper(UserRepository userRepository, TypeOfValueRepository typeOfValueRepository){
+        return new MeasurementMapper(userRepository, typeOfValueRepository);
     }
 }
