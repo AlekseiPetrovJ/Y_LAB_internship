@@ -15,10 +15,12 @@ import java.util.Optional;
 @Repository
 public class JdbcLogRepository implements LogRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final LogMapper logMapper;
 
     @Autowired
-    public JdbcLogRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcLogRepository(JdbcTemplate jdbcTemplate, LogMapper logMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.logMapper = logMapper;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class JdbcLogRepository implements LogRepository {
                         "LEFT JOIN log_level ON application_log.level_id=log_level.level_id " +
                         "WHERE application_log.person_id=? " +
                         "ORDER BY registered";
-        return jdbcTemplate.query(selectSql, new Object[]{userId}, new LogMapper());
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, logMapper);
     }
 
     @Override
@@ -53,6 +55,6 @@ public class JdbcLogRepository implements LogRepository {
                         "FROM application_log " +
                         "WHERE level_id=? AND application_log.person_id=? " +
                         "ORDER BY registered";
-        return jdbcTemplate.query(selectSql, new Object[]{level.getLevelId(), userId}, new LogMapper());
+        return jdbcTemplate.query(selectSql, new Object[]{level.getLevelId(), userId}, logMapper);
     }
 }
