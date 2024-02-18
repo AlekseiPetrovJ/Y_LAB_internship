@@ -29,9 +29,9 @@ password: 123
 ## Регистрация пользователя
 ### Request
 
-`POST /measurement/user/add` 
+`POST /measurement/user`
 
-        curl --location 'http://localhost:8080/measurement/user/add' \
+        curl --location 'http://localhost:8080/measurement/user' \
         --header 'Content-Type: application/json' \
         --data '{
         "name": "Fedor",
@@ -52,10 +52,45 @@ password: 123
         curl --location 'http://localhost:8080/measurement/user/100004'
 
 ### Response
+
     Content-Type: application.json 
     Status: 200 OK
 
     {"name":"Fedor","id":100004}
+
+## Добавление нового вида показаний
+
+### Request
+
+`POST /measurement/type`
+
+        curl --location 'http://localhost:8080/measurement/type' \
+        --header 'Content-Type: application/json' \
+        --data '{
+        "name": "trash",
+        "unitOfMeasurement": "m3"
+        }'
+
+### Response
+
+    Content-Type: application.json 
+    Status: 201 OK
+
+## Получение вида показаний
+
+### Request
+
+`GET /measurement/type/<id>`
+
+        curl --location 'http://localhost:8080/measurement/type/100001'
+
+### Response
+
+    Content-Type: application.json 
+    Status: 200 OK
+
+     {"id" : 100001, "name" : "cold water", "unitOfMeasurement" : "m3" }
+
 
 - регистрация пользователя (Любой пользователь)
 - авторизация пользователя  (Неавторизованный пользователь)
