@@ -29,6 +29,8 @@
     <lombok.version>1.18.30</lombok.version>
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <aspectj-maven-plugin.version>1.14.0</aspectj-maven-plugin.version>
+    <testcontainers.version>1.19.5</testcontainers.version>
+    <spring-test.version>6.0.9</spring-test.version>
   </properties>
 
   <dependencies>
@@ -50,6 +52,23 @@
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
     </dependency>
+<!--    Testcontainers-->
+    <!-- https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.testcontainers/postgresql -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!--    Testcontainers  END-->
+
     <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
     <dependency>
       <groupId>org.liquibase</groupId>
@@ -105,7 +124,7 @@
       <version>${json.version}</version>
     </dependency>
 
-<!--    AOP-->
+    <!--    AOP-->
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
@@ -144,9 +163,19 @@
       <artifactId>mapstruct</artifactId>
       <version>${org.mapstruct.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring-test.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
-
 
   <build>
     <finalName>measurement</finalName>
