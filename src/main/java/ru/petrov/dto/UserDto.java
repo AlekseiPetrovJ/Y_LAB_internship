@@ -10,7 +10,6 @@ public class UserDto {
     @NotEmpty(message = "Id not might be empty")
     private Integer id;
 
-
     public String getName() {
         return name;
     }
