@@ -58,9 +58,9 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void set() {
-        user = new User("User", "password", Role.USER);
-        userNew = new User("UserNew", "passwordnew", Role.USER);
-        admin = new User("Admin", "password", Role.ADMIN);
+        user = new User("User", "password", Role.ROLE_USER);
+        userNew = new User("UserNew", "passwordnew", Role.ROLE_USER);
+        admin = new User("Admin", "password", Role.ROLE_ADMIN);
     }
 
     @Test

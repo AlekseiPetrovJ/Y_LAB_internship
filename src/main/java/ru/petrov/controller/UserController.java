@@ -65,7 +65,7 @@ public class UserController {
             throw new EntityNotCreatedException(errorMsg.toString());
         }
         user.setRegistered(LocalDateTime.now());
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         Optional<User> save = userService.save(user);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(save.get().getId()).toUri()).build();
