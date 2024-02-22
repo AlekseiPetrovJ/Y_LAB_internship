@@ -1,6 +1,11 @@
 package ru.petrov.model;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public abstract class AbstractNamedEntity extends AbstractEntity {
+    @NotEmpty(message = "Name not might be empty")
+    @Size(min = 3, max = 60, message = "Name might contain 3-60 char")
     protected String name;
 
     public AbstractNamedEntity(Integer id, String name) {

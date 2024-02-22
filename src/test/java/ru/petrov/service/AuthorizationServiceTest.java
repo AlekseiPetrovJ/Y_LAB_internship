@@ -24,7 +24,7 @@ class AuthorizationServiceTest {
     @Test
     void authorizationPass() {
 
-        User expectedUser = new User("Ivan", "333", Role.USER);
+        User expectedUser = new User("Ivan", "333", Role.ROLE_USER);
         Mockito.when(userRepository.get("Ivan"))
                 .thenReturn(Optional.of(expectedUser));
         Optional<User> actual = authorizationService.authorization("Ivan", "333");
@@ -34,7 +34,7 @@ class AuthorizationServiceTest {
     @Test
     void authorizationDeny() {
 
-        User expectedUser = new User("Ivan", "333", Role.USER);
+        User expectedUser = new User("Ivan", "333", Role.ROLE_USER);
         Mockito.when(userRepository.get("Ivan"))
                 .thenReturn(Optional.of(expectedUser));
         Optional<User> actual = authorizationService.authorization("Ivan", "222");

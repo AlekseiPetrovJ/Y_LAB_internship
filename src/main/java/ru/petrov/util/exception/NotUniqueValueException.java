@@ -1,4 +1,4 @@
-package ru.petrov.util;
+package ru.petrov.util.exception;
 
 public class NotUniqueValueException extends RuntimeException {
     public NotUniqueValueException(String message) {

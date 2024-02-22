@@ -3,8 +3,8 @@ package ru.petrov.repository.inMemory;
 import ru.petrov.model.Measurement;
 import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.NotFoundException;
-import ru.petrov.util.NotUniqueValueException;
+import ru.petrov.util.exception.EntityNotFoundException;
+import ru.petrov.util.exception.NotUniqueValueException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,7 +40,7 @@ public class InMemoryMeasurementRepository implements MeasurementRepository {
             }
             measurement.setUser(userRepository.get(userId)
                     //TODO добавить логирование, убрать исключение и возвращать пустой Опционал
-                    .orElseThrow(() -> new NotFoundException("Not found entity withid: " + userId)));
+                    .orElseThrow(EntityNotFoundException::new));
             measurement.setId(counter.incrementAndGet());
             measurements.add(measurement);
             return Optional.of(measurement);

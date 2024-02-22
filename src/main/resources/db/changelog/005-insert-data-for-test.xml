@@ -8,12 +8,12 @@
     <changeSet id="1-insert-person_role" author="aleksei">
         <insert tableName="person_role">
             <column name="role_id" valueNumeric="100000"/>
-            <column name="role" value="ADMIN"/>
+            <column name="role" value="ROLE_ADMIN"/>
         </insert>
 
         <insert tableName="person_role">
             <column name="role_id" valueNumeric="100001"/>
-            <column name="role" value="USER"/>
+            <column name="role" value="ROLE_USER"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

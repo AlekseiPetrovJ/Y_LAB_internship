@@ -10,48 +10,45 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.petrov.dto.UserDto;
-import ru.petrov.dto.UserInDto;
-import ru.petrov.model.Role;
-import ru.petrov.model.User;
-import ru.petrov.service.UserService;
+import ru.petrov.dto.TypeOfValueDto;
+import ru.petrov.model.TypeOfValue;
+import ru.petrov.service.TypeOfValueService;
 import ru.petrov.util.exception.EntityNotCreatedException;
 import ru.petrov.util.exception.EntityNotFoundException;
 import ru.petrov.util.exception.ErrorResponse;
-import ru.petrov.util.validator.UserValidator;
+import ru.petrov.util.validator.TypeOfValueValidator;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+@RequestMapping(path = "/type", produces = MediaType.APPLICATION_JSON_VALUE)
+public class TypeOfValueController {
     private final ModelMapper mapper;
-    private final UserService userService;
-    private final UserValidator userValidator;
+    private final TypeOfValueService typeService;
+    private final TypeOfValueValidator typeValidator;
 
     @Autowired
-    public UserController(ModelMapper mapper, UserService userService, UserValidator userValidator) {
+    public TypeOfValueController(ModelMapper mapper, TypeOfValueService typeService, TypeOfValueValidator typeValidator) {
         this.mapper = mapper;
-        this.userService = userService;
-        this.userValidator = userValidator;
+        this.typeService = typeService;
+        this.typeValidator = typeValidator;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> get(@PathVariable("id") int id) {
-        return ResponseEntity.ok(mapper.map(userService.get(id), UserDto.class));
+    public ResponseEntity<TypeOfValueDto> get(@PathVariable("id") int id) {
+        return ResponseEntity.ok(mapper.map(typeService.get(id), TypeOfValueDto.class));
     }
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserInDto userInDto,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid TypeOfValueDto typeDto,
                                              BindingResult bindingResult) {
-        User user = mapper.map(userInDto, User.class);
-        if (user.getName()!=null){
-            user.setName(user.getName().trim());
+        TypeOfValue type = mapper.map(typeDto, TypeOfValue.class);
+        if (type.getName()!=null){
+            type.setName(type.getName().trim());
         }
-        userValidator.validate(user, bindingResult);
+        typeValidator.validate(type, bindingResult);
 
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
@@ -64,9 +61,7 @@ public class UserController {
             }
             throw new EntityNotCreatedException(errorMsg.toString());
         }
-        user.setRegistered(LocalDateTime.now());
-        user.setRole(Role.ROLE_USER);
-        Optional<User> save = userService.save(user);
+        Optional<TypeOfValue> save = typeService.save(type);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(save.get().getId()).toUri()).build();
     }
@@ -75,7 +70,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     private ResponseEntity<ErrorResponse> handleException(EntityNotFoundException e) {
         ErrorResponse response = new ErrorResponse(
-                "Пользователь не найден",
+                "Тип измерения не найден",
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

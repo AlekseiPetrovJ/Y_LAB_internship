@@ -1,12 +1,16 @@
 package ru.petrov.repository;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import ru.petrov.InitializationDb;
+import liquibase.exception.LiquibaseException;
+import liquibase.integration.spring.SpringLiquibase;
+import org.junit.jupiter.api.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
+import ru.petrov.repository.jdbc.JdbcUserRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,23 +19,48 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class AbstractUserRepositoryTest {
-    public UserRepository userRepository;
+@Testcontainers
+public class UserRepositoryTest {
+
+    private static UserRepository userRepository;
 
     User user;
     User userNew;
     User admin;
 
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Container
+    private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:15.5");
+
+    @BeforeAll
+    public static void startContainer() {
+        postgresqlContainer.start();
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(postgresqlContainer.getDriverClassName());
+        dataSource.setUrl(postgresqlContainer.getJdbcUrl());
+        dataSource.setUsername(postgresqlContainer.getUsername());
+        dataSource.setPassword(postgresqlContainer.getPassword());
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:db/changelog/changelog-for-test.xml");
+        liquibase.setDataSource(dataSource);
+        try {
+            liquibase.afterPropertiesSet();
+            System.out.println("Changelog applied successfully.");
+        } catch (LiquibaseException e) {
+            System.err.println("Error applying changelog: " + e.getMessage());
+        }
+        userRepository = new JdbcUserRepository(new JdbcTemplate(dataSource));
+    }
+
+    @AfterAll
+    public static void stopContainer() {
+        postgresqlContainer.stop();
     }
 
     @BeforeEach
     void set() {
-        InitializationDb.migrationForTest();
-        user = new User("User", "password", Role.USER);
-        userNew = new User("UserNew", "passwordnew", Role.USER);
-        admin = new User("Admin", "password", Role.ADMIN);
+        user = new User("User", "password", Role.ROLE_USER);
+        userNew = new User("UserNew", "passwordnew", Role.ROLE_USER);
+        admin = new User("Admin", "password", Role.ROLE_ADMIN);
     }
 
     @Test
