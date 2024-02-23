@@ -1,4 +1,23 @@
-driver: org.postgresql.Driver
-url: jdbc:postgresql://localhost:5433/ylab
-db_user: ylab
-password: ylabylab
+spring:
+  profiles:
+    active: "development"
+---
+spring:
+  config:
+    activate:
+      on-profile: "development"
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/ylab
+    db_user: ylab
+    password: ylabylab
+  liquibase:
+    changelog: classpath:db/changelog/changelog.xml
+  logging:
+    level:
+      org.springframework.security.web: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: "production"

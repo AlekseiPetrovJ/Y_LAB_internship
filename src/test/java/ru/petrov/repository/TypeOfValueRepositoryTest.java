@@ -23,7 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 @Testcontainers
-public abstract class TypeOfValueRepositoryTest {
+public class TypeOfValueRepositoryTest {
     public static TypeOfValueRepository typeOfValueRepository;
 
     TypeOfValue hotWater;
