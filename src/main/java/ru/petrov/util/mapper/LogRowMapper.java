@@ -9,10 +9,10 @@ import ru.petrov.repository.UserRepository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-public class LogMapper implements RowMapper<Log> {
+public class LogRowMapper implements RowMapper<Log> {
     private  final UserRepository userRepository;
 
-    public LogMapper(UserRepository userRepository) {
+    public LogRowMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

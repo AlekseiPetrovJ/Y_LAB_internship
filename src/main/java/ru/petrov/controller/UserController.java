@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.petrov.dto.UserDto;
 import ru.petrov.dto.UserInDto;
-import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.service.UserService;
 import ru.petrov.util.CheckBindingResult;
 import ru.petrov.util.validator.UserValidator;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -52,8 +50,6 @@ public class UserController {
 
         new CheckBindingResult().check(bindingResult);
         
-        user.setRegistered(LocalDateTime.now());
-        user.setRole(Role.ROLE_USER);
         Optional<User> save = userService.save(user);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(save.get().getId()).toUri()).build();

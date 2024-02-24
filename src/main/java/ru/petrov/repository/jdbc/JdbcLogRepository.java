@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.petrov.model.Log;
 import ru.petrov.model.LogLevel;
 import ru.petrov.repository.LogRepository;
-import ru.petrov.util.mapper.LogMapper;
+import ru.petrov.util.mapper.LogRowMapper;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,12 +15,12 @@ import java.util.Optional;
 @Repository
 public class JdbcLogRepository implements LogRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final LogMapper logMapper;
+    private final LogRowMapper logRowMapper;
 
     @Autowired
-    public JdbcLogRepository(JdbcTemplate jdbcTemplate, LogMapper logMapper) {
+    public JdbcLogRepository(JdbcTemplate jdbcTemplate, LogRowMapper logRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
-        this.logMapper = logMapper;
+        this.logRowMapper = logRowMapper;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class JdbcLogRepository implements LogRepository {
                         "LEFT JOIN log_level ON application_log.level_id=log_level.level_id " +
                         "WHERE application_log.person_id=? " +
                         "ORDER BY registered";
-        return jdbcTemplate.query(selectSql, new Object[]{userId}, logMapper);
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, logRowMapper);
     }
 
     @Override
@@ -55,6 +55,6 @@ public class JdbcLogRepository implements LogRepository {
                         "FROM application_log " +
                         "WHERE level_id=? AND application_log.person_id=? " +
                         "ORDER BY registered";
-        return jdbcTemplate.query(selectSql, new Object[]{level.getLevelId(), userId}, logMapper);
+        return jdbcTemplate.query(selectSql, new Object[]{level.getLevelId(), userId}, logRowMapper);
     }
 }
