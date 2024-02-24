@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.petrov.dto.UserDto;
@@ -16,11 +15,10 @@ import ru.petrov.dto.UserInDto;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.service.UserService;
-import ru.petrov.util.exception.EntityNotCreatedException;
+import ru.petrov.util.CheckBindingResult;
 import ru.petrov.util.validator.UserValidator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -52,17 +50,8 @@ public class UserController {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userValidator.validate(user, bindingResult);
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage() == null ? error.getCode() : error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new EntityNotCreatedException(errorMsg.toString());
-        }
+        new CheckBindingResult().check(bindingResult);
+        
         user.setRegistered(LocalDateTime.now());
         user.setRole(Role.ROLE_USER);
         Optional<User> save = userService.save(user);

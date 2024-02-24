@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.petrov.dto.TypeOfValueDto;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.service.TypeOfValueService;
-import ru.petrov.util.exception.EntityNotCreatedException;
+import ru.petrov.util.CheckBindingResult;
 import ru.petrov.util.validator.TypeOfValueValidator;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,17 +47,8 @@ public class TypeOfValueController {
         }
         typeValidator.validate(type, bindingResult);
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage() == null ? error.getCode() : error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new EntityNotCreatedException(errorMsg.toString());
-        }
+        new CheckBindingResult().check(bindingResult);
+
         Optional<TypeOfValue> save = typeService.save(type);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(save.get().getId()).toUri()).build();
