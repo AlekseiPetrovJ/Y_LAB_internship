@@ -1,5 +1,6 @@
 package ru.petrov.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "basicAuth")
     public ResponseEntity<UserDto> get(@PathVariable("id") int id) {
         return ResponseEntity.ok(mapper.map(userService.get(id), UserDto.class));
     }

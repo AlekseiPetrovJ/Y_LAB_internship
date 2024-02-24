@@ -1,10 +1,10 @@
 package ru.petrov.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/type", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/type")
+@SecurityRequirement(name = "basicAuth")
 public class TypeOfValueController {
     private final ModelMapper mapper;
     private final TypeOfValueService typeService;

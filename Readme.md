@@ -20,6 +20,10 @@ password: 123
 login: admin  
 password: 123
 
+## OpenAPI
+<a href="">Swagger UI</a> http://localhost:8080/swagger-ui/index.html
+
+
 Пункты меню отображаются в соответствии с правами пользователя.
 
 Показания можно подавать один раз в месяц.
@@ -31,73 +35,6 @@ password: 123
 Пользователь может видеть только свои показания, администратор может видеть показания всех пользователей.
 
 Возможности:
-
-## Регистрация пользователя
-### Request
-
-`POST /measurement/user`
-
-        curl --location 'http://localhost:8080/measurement/user' \
-        --header 'Content-Type: application/json' \
-        --data '{
-        "name": "Fedor",
-        "password": "qwerty7"
-        }'
-
-### Response
-    Content-Type: application.json 
-    Status: 201 OK
-
-    {"name":"Fedor","id":100004}
-
-## Получение пользователя
-### Request
-
-`GET /measurement/user/<id>`
-
-        curl --location 'http://localhost:8080/measurement/user/100004'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 200 OK
-
-    {"name":"Fedor","id":100004}
-
-## Добавление нового вида показаний
-
-### Request
-
-`POST /measurement/type`
-
-        curl --location 'http://localhost:8080/measurement/type' \
-        --header 'Content-Type: application/json' \
-        --data '{
-        "name": "trash",
-        "unitOfMeasurement": "m3"
-        }'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 201 OK
-
-## Получение вида показаний
-
-### Request
-
-`GET /measurement/type/<id>`
-
-        curl --location 'http://localhost:8080/measurement/type/100001'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 200 OK
-
-     {"id" : 100001, "name" : "cold water", "unitOfMeasurement" : "m3" }
-
-
 - регистрация пользователя (Любой пользователь)
 - авторизация пользователя  (Неавторизованный пользователь)
 - просмотр существующих типов показаний (Автозированный пользователь)
