@@ -17,8 +17,6 @@ import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.service.UserService;
 import ru.petrov.util.exception.EntityNotCreatedException;
-import ru.petrov.util.exception.EntityNotFoundException;
-import ru.petrov.util.exception.ErrorResponse;
 import ru.petrov.util.validator.UserValidator;
 
 import java.time.LocalDateTime;
@@ -70,26 +68,5 @@ public class UserController {
         Optional<User> save = userService.save(user);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(save.get().getId()).toUri()).build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    private ResponseEntity<ErrorResponse> handleException(EntityNotFoundException e) {
-        ErrorResponse response = new ErrorResponse(
-                "Пользователь не найден",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
-    private ResponseEntity<ErrorResponse> handleException(EntityNotCreatedException e) {
-        ErrorResponse response = new ErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
-        );
-        //https://stackoverflow.com/questions/16133923/400-vs-422-response-to-post-of-data
-        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
