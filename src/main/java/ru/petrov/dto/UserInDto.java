@@ -15,6 +15,11 @@ public class UserInDto {
     @Schema(example = "Pass123")
     private String password;
 
+    public UserInDto(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
