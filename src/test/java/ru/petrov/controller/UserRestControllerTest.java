@@ -83,4 +83,15 @@ public class UserRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("John Doe"));
     }
+
+    @Test
+    @DisplayName("Попытка получить несуществующего пользователя (с авторизацией)")
+    void notFoundUserWithAuth() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth("user", "123");
+
+        mvc.perform(get("/user/111111111").contentType(MediaType.APPLICATION_JSON)
+                        .headers(headers))
+                .andExpect(status().isNotFound());
+    }
 }
