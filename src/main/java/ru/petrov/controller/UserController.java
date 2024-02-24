@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +48,8 @@ public class UserController {
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserInDto userInDto,
                                              BindingResult bindingResult) {
         User user = mapper.map(userInDto, User.class);
-        if (user.getName()!=null){
-            user.setName(user.getName().trim());
-        }
+        user.setName(user.getName().trim());
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
