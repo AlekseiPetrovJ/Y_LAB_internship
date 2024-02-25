@@ -115,6 +115,8 @@
             <column name="registered" type="TIMESTAMP" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
+            <column name="duration" type="BIGINT">
+            </column>
             <column name="level_id" type="INTEGER">
                 <constraints nullable="false" foreignKeyName="log_level"
                              references="log_level(level_id)"/>

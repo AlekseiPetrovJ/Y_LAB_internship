@@ -22,6 +22,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @Loggable
     public Optional<User> save(User user) {
         String query;
         int result;
@@ -49,13 +50,13 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @Loggable
     public boolean delete(Integer id) {
         String query = "delete from person where person_id=?";
         return jdbcTemplate.update(query, new Object[]{id})>0;
     }
 
     @Override
-    @Loggable
     public Optional<User> get(Integer id) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where person_id=?";
@@ -65,7 +66,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    @Loggable
     public Optional<User> get(String name) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where name=?";

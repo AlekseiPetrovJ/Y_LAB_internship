@@ -54,7 +54,7 @@
         </insert>
 
         <insert tableName="person">
-            <column name="name" value="service"/>
+            <column name="name" value="anonymousUser"/>
             <column name="password" value=""/>
             <column name="role_id" valueNumeric="100001"/>
         </insert>

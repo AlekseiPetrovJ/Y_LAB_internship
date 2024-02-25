@@ -8,18 +8,24 @@ public final class Log extends AbstractEntity {
     private final LogLevel level;
     private final User user;
     private final String logValue;
+    private final long duration;
 
 
-    public Log(LocalDateTime registered, LogLevel level, User user, String logValue) {
+    public Log(LocalDateTime registered, LogLevel level, User user, String logValue, long duration) {
         super(null);
         this.registered = registered;
         this.level = level;
         this.user = user;
         this.logValue = logValue;
+        this.duration = duration;
     }
 
     public Log(LogLevel level, User user, String logValue) {
-        this(LocalDateTime.now(), level, user, logValue);
+        this(LocalDateTime.now(), level, user, logValue, 0);
+    }
+
+    public Log(LogLevel level, User user, String logValue, long duration) {
+        this(LocalDateTime.now(), level, user, logValue, duration);
     }
 
     public LocalDateTime getRegistered() {
@@ -36,6 +42,10 @@ public final class Log extends AbstractEntity {
 
     public String getLogValue() {
         return logValue;
+    }
+
+    public long getDuration() {
+        return duration;
     }
 
     @Override
@@ -58,9 +68,9 @@ public final class Log extends AbstractEntity {
     public String toString() {
         return "Log[" +
                 "dateTime=" + registered + ", " +
+                "duration=" + duration + "ms, " +
                 "level=" + level + ", " +
                 "user=" + user + ", " +
                 "log=" + logValue + ']';
     }
-
 }

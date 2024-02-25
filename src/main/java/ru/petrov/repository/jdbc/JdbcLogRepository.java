@@ -25,13 +25,14 @@ public class JdbcLogRepository implements LogRepository {
 
     @Override
     public Optional<Log> save(Log log) {
-        String query = "INSERT INTO application_log (level_id, person_id, registered, log_value) " +
-                "VALUES (?, ?, ?, ?);";
+        String query = "INSERT INTO application_log (level_id, person_id, registered, log_value, duration) " +
+                "VALUES (?, ?, ?, ?, ?);";
         if (jdbcTemplate.update(query,
                 log.getLevel().getLevelId(),
                 log.getUser().getId(),
                 Timestamp.valueOf(log.getRegistered()),
-                log.getLogValue()) > 0) {
+                log.getLogValue(),
+                log.getDuration()) > 0) {
             return Optional.of(log);
         }
         return Optional.empty();
@@ -40,7 +41,7 @@ public class JdbcLogRepository implements LogRepository {
     @Override
     public List<Log> get(Integer userId) {
         String selectSql =
-                "SELECT log_id, registered, log_level, person_id, log_value " +
+                "SELECT log_id, registered, log_level, person_id, log_value, duration " +
                         "FROM application_log  " +
                         "LEFT JOIN log_level ON application_log.level_id=log_level.level_id " +
                         "WHERE application_log.person_id=? " +
@@ -51,7 +52,7 @@ public class JdbcLogRepository implements LogRepository {
     @Override
     public List<Log> getByLevel(LogLevel level, Integer userId) {
         String selectSql =
-                "SELECT log_id, registered, level_id, person_id, log_value " +
+                "SELECT log_id, registered, level_id, person_id, log_value, duration " +
                         "FROM application_log " +
                         "WHERE level_id=? AND application_log.person_id=? " +
                         "ORDER BY registered";

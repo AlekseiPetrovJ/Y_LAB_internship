@@ -2,6 +2,7 @@ package ru.petrov.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.petrov.annotations.Loggable;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.util.exception.EntityNotFoundException;
@@ -17,6 +18,7 @@ public class TypeOfValueService {
         this.typeOfValueRepository = typeOfValueRepository;
     }
 
+    @Loggable
     public TypeOfValue get(int id) {
         Optional<TypeOfValue> foundType = typeOfValueRepository.get(id);
         return foundType.orElseThrow(EntityNotFoundException::new);

@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.petrov.annotations.LoggableWithDuration;
 import ru.petrov.dto.TypeOfValueDto;
+import ru.petrov.dto.TypeOfValueInDto;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.service.TypeOfValueService;
 import ru.petrov.util.CheckBindingResult;
@@ -33,13 +35,14 @@ public class TypeOfValueController {
     }
 
     @GetMapping("/{id}")
+    @LoggableWithDuration
     public ResponseEntity<TypeOfValueDto> get(@PathVariable("id") int id) {
         return ResponseEntity.ok(mapper.map(typeService.get(id), TypeOfValueDto.class));
     }
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid TypeOfValueDto typeDto,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid TypeOfValueInDto typeDto,
                                              BindingResult bindingResult) {
         TypeOfValue type = mapper.map(typeDto, TypeOfValue.class);
         if (type.getName()!=null){
