@@ -25,7 +25,7 @@ login: admin
 password: 123
 
 ## OpenAPI
-<a href=" http://localhost:8080/swagger-ui/index.html">Swagger UI</a>
+[Swagger Ui](http://localhost:8080/swagger-ui/index.html)
 
 
 Пункты меню отображаются в соответствии с правами пользователя.
