@@ -121,20 +121,13 @@
                 <constraints nullable="false" foreignKeyName="log_level"
                              references="log_level(level_id)"/>
             </column>
-            <column name="person_id" type="INTEGER">
+            <column name="user_name" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
             <column name="log_value" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint
-                baseColumnNames="person_id"
-                baseTableName="application_log"
-                constraintName="fk_log_person"
-                referencedColumnNames="person_id"
-                referencedTableName="person"
-                onDelete="CASCADE"/>
     </changeSet>
 
 

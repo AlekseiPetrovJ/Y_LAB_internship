@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.mapper.LogRowMapper;
 import ru.petrov.util.mapper.MeasurementRowMapper;
 
 import javax.sql.DataSource;
@@ -48,11 +47,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
-    }
-
-    @Bean
-    public LogRowMapper logMapper(UserRepository userRepository){
-        return new LogRowMapper(userRepository);
     }
 
     @Bean

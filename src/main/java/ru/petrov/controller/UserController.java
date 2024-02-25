@@ -8,8 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.petrov.annotations.LoggableCustom;
 import ru.petrov.dto.UserDto;
 import ru.petrov.dto.UserInDto;
 import ru.petrov.model.User;
@@ -35,6 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "basicAuth")
+    @LoggableCustom
     public ResponseEntity<UserDto> get(@PathVariable("id") int id) {
         return ResponseEntity.ok(mapper.map(userService.get(id), UserDto.class));
     }

@@ -3,7 +3,7 @@ package ru.petrov.repository.jdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.petrov.annotations.Loggable;
+import ru.petrov.annotations.LoggableCustom;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
 import ru.petrov.util.mapper.UserRowMapper;
@@ -22,7 +22,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    @Loggable
+    @LoggableCustom
     public Optional<User> save(User user) {
         String query;
         int result;
@@ -50,7 +50,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    @Loggable
+    @LoggableCustom
     public boolean delete(Integer id) {
         String query = "delete from person where person_id=?";
         return jdbcTemplate.update(query, new Object[]{id})>0;

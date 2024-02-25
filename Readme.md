@@ -12,6 +12,10 @@
 
 Позволяет регистрировать показания приборов учета.
 
+
+Запись логов реализуется через аннотации @LoggableCustom и @LoggableWithDuration из custom-assert-spring-boot-starter
+[https://github.com/AlekseiPetrovJ/CustomAssertStarter](https://github.com/AlekseiPetrovJ/CustomAssertStarter)
+
 Данные для авторизации:
 
 login: user  
