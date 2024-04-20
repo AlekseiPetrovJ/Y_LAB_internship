@@ -7,7 +7,7 @@ import ru.petrov.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper implements RowMapper<User> {
+public class UserRowMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         int id = resultSet.getInt("person_id");

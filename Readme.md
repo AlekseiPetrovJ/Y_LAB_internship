@@ -4,7 +4,17 @@
 
 [2. ДЗ №2](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/2)
 
-Позволяет регистировать показания приборов учета.
+[3. ДЗ №3](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/3)
+
+[4. ДЗ №4](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/4)
+
+[5. ДЗ №5](https://github.com/AlekseiPetrovJ/Y_LAB_internship/pull/5)
+
+Позволяет регистрировать показания приборов учета.
+
+
+Запись логов реализуется через аннотации @LoggableCustom и @LoggableWithDuration из custom-assert-spring-boot-starter
+[https://github.com/AlekseiPetrovJ/CustomAssertStarter](https://github.com/AlekseiPetrovJ/CustomAssertStarter)
 
 Данные для авторизации:
 
@@ -14,84 +24,21 @@ password: 123
 login: admin  
 password: 123
 
-Пункты меню отображаются в соответсвии с правами пользователя.
+## OpenAPI
+[Swagger Ui](http://localhost:8080/swagger-ui/index.html)
+
+
+Пункты меню отображаются в соответствии с правами пользователя.
 
 Показания можно подавать один раз в месяц.
 
-Ранее поданые показания редактировать запрещено.
+Ранее поданные показания редактировать запрещено.
 
-Последние поданые показания считаются актуальными.
+Последние поданные показания считаются актуальными.
 
 Пользователь может видеть только свои показания, администратор может видеть показания всех пользователей.
 
 Возможности:
-
-## Регистрация пользователя
-### Request
-
-`POST /measurement/user`
-
-        curl --location 'http://localhost:8080/measurement/user' \
-        --header 'Content-Type: application/json' \
-        --data '{
-        "name": "Fedor",
-        "password": "qwerty7"
-        }'
-
-### Response
-    Content-Type: application.json 
-    Status: 201 OK
-
-    {"name":"Fedor","id":100004}
-
-## Получение пользователя
-### Request
-
-`GET /measurement/user/<id>`
-
-        curl --location 'http://localhost:8080/measurement/user/100004'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 200 OK
-
-    {"name":"Fedor","id":100004}
-
-## Добавление нового вида показаний
-
-### Request
-
-`POST /measurement/type`
-
-        curl --location 'http://localhost:8080/measurement/type' \
-        --header 'Content-Type: application/json' \
-        --data '{
-        "name": "trash",
-        "unitOfMeasurement": "m3"
-        }'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 201 OK
-
-## Получение вида показаний
-
-### Request
-
-`GET /measurement/type/<id>`
-
-        curl --location 'http://localhost:8080/measurement/type/100001'
-
-### Response
-
-    Content-Type: application.json 
-    Status: 200 OK
-
-     {"id" : 100001, "name" : "cold water", "unitOfMeasurement" : "m3" }
-
-
 - регистрация пользователя (Любой пользователь)
 - авторизация пользователя  (Неавторизованный пользователь)
 - просмотр существующих типов показаний (Автозированный пользователь)
@@ -107,5 +54,4 @@ password: 123
 [//]: # (- реализовать контроль прав пользователя)
 
 [//]: # (- Аудит действий пользователя &#40;авторизация, завершение работы, подача показаний, получение истории подачи показаний и тд&#41;)
-Пример интерфейса неавторизованного пользователя:
-![Иллюстрация к проекту](img.png)
+

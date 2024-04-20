@@ -43,18 +43,18 @@
     <changeSet id="3-insert-person" author="aleksei">
         <insert tableName="person">
             <column name="name" value="admin"/>
-            <column name="password" value="123"/>
+            <column name="password" value="$2a$10$pNA7ve9.4QvHorE1dutcYOGlaDmflfUYFyB2WTjjEo1kIt5WRZZDO"/>
             <column name="role_id" valueNumeric="100000"/>
         </insert>
 
         <insert tableName="person">
             <column name="name" value="user"/>
-            <column name="password" value="123"/>
+            <column name="password" value="$2a$10$6j/tbadvu4gjKbcGHNMGl.40HOQLYeSY45elQt4RrTZE8IA.UA6fi"/>
             <column name="role_id" valueNumeric="100001"/>
         </insert>
 
         <insert tableName="person">
-            <column name="name" value="service"/>
+            <column name="name" value="anonymousUser"/>
             <column name="password" value=""/>
             <column name="role_id" valueNumeric="100001"/>
         </insert>

@@ -1,13 +1,11 @@
 package ru.petrov.repository;
 
-import liquibase.exception.LiquibaseException;
-import liquibase.integration.spring.SpringLiquibase;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.petrov.model.Role;
 import ru.petrov.model.User;
 import ru.petrov.repository.jdbc.JdbcUserRepository;
@@ -19,8 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Testcontainers
-public class UserRepositoryTest {
+public class UserRepositoryTest extends AbstractRepositoryTest{
 
     private static UserRepository userRepository;
 
@@ -28,32 +25,9 @@ public class UserRepositoryTest {
     User userNew;
     User admin;
 
-    @Container
-    private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:15.5");
-
     @BeforeAll
-    public static void startContainer() {
-        postgresqlContainer.start();
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(postgresqlContainer.getDriverClassName());
-        dataSource.setUrl(postgresqlContainer.getJdbcUrl());
-        dataSource.setUsername(postgresqlContainer.getUsername());
-        dataSource.setPassword(postgresqlContainer.getPassword());
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setChangeLog("classpath:db/changelog/changelog-for-test.xml");
-        liquibase.setDataSource(dataSource);
-        try {
-            liquibase.afterPropertiesSet();
-            System.out.println("Changelog applied successfully.");
-        } catch (LiquibaseException e) {
-            System.err.println("Error applying changelog: " + e.getMessage());
-        }
+    public static void setRepository() {
         userRepository = new JdbcUserRepository(new JdbcTemplate(dataSource));
-    }
-
-    @AfterAll
-    public static void stopContainer() {
-        postgresqlContainer.stop();
     }
 
     @BeforeEach
@@ -97,7 +71,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Удаление не существующего пользователя")
+    @DisplayName("Удаление несуществующего пользователя")
     public void deleteNotFound() {
         Assertions.assertFalse(userRepository.delete(500));
     }
@@ -111,7 +85,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Получение не существущего пользователя")
+    @DisplayName("Получение несуществующего пользователя")
     void getNotFound() {
         assertEquals(Optional.empty(), userRepository.get(500));
     }

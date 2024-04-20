@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class MeasurementMapper implements RowMapper<Measurement> {
+public class MeasurementRowMapper implements RowMapper<Measurement> {
     private final UserRepository userRepository;
     private final TypeOfValueRepository typeOfValueRepository;
 
     @Autowired
-    public MeasurementMapper(UserRepository userRepository, TypeOfValueRepository typeOfValueRepository) {
+    public MeasurementRowMapper(UserRepository userRepository, TypeOfValueRepository typeOfValueRepository) {
         this.userRepository = userRepository;
         this.typeOfValueRepository = typeOfValueRepository;
     }

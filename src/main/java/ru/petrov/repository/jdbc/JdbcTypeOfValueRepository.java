@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.petrov.model.TypeOfValue;
 import ru.petrov.repository.TypeOfValueRepository;
-import ru.petrov.util.mapper.TypeOfValueMapper;
+import ru.petrov.util.mapper.TypeOfValueRowMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +40,7 @@ public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public Optional<TypeOfValue> get(Integer id) {
         String selectSql = "SELECT * FROM type_of_value WHERE type_id=?";
-        return jdbcTemplate.query(selectSql, new Object[]{id}, new TypeOfValueMapper())
+        return jdbcTemplate.query(selectSql, new Object[]{id}, new TypeOfValueRowMapper())
                 .stream()
                 .findAny();
     }
@@ -48,7 +48,7 @@ public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public Optional<TypeOfValue> get(String name) {
         String selectSql = "SELECT * FROM type_of_value WHERE name=?";
-        return jdbcTemplate.query(selectSql, new Object[]{name}, new TypeOfValueMapper())
+        return jdbcTemplate.query(selectSql, new Object[]{name}, new TypeOfValueRowMapper())
                 .stream()
                 .findAny();
     }
@@ -56,6 +56,6 @@ public class JdbcTypeOfValueRepository implements TypeOfValueRepository {
     @Override
     public List<TypeOfValue> getAll() {
         String selectSql = "SELECT * FROM type_of_value";
-        return jdbcTemplate.query(selectSql, new TypeOfValueMapper());
+        return jdbcTemplate.query(selectSql, new TypeOfValueRowMapper());
     }
 }

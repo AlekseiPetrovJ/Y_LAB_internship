@@ -3,9 +3,7 @@ package ru.petrov.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 
-public class TypeOfValueDto {
-    @Schema(example = "100000")
-    private Integer id;
+public class TypeOfValueInDto {
     @NotEmpty(message = "Name not might be empty")
     @Schema(example = "hot water")
     private String name;
@@ -27,13 +25,5 @@ public class TypeOfValueDto {
 
     public void setUnitOfMeasurement(String unitOfMeasurement) {
         this.unitOfMeasurement = unitOfMeasurement;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 }

@@ -3,10 +3,10 @@ package ru.petrov.repository.jdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.petrov.annotations.Loggable;
+import ru.petrov.annotations.LoggableCustom;
 import ru.petrov.model.User;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.mapper.UserMapper;
+import ru.petrov.util.mapper.UserRowMapper;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -22,6 +22,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @LoggableCustom
     public Optional<User> save(User user) {
         String query;
         int result;
@@ -49,27 +50,26 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @LoggableCustom
     public boolean delete(Integer id) {
         String query = "delete from person where person_id=?";
         return jdbcTemplate.update(query, new Object[]{id})>0;
     }
 
     @Override
-    @Loggable
     public Optional<User> get(Integer id) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where person_id=?";
-        return jdbcTemplate.query(selectSql, new Object[]{id}, new UserMapper())
+        return jdbcTemplate.query(selectSql, new Object[]{id}, new UserRowMapper())
                 .stream()
                 .findAny();
     }
 
     @Override
-    @Loggable
     public Optional<User> get(String name) {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id " +
                 "where name=?";
-        return jdbcTemplate.query(selectSql, new Object[]{name}, new UserMapper())
+        return jdbcTemplate.query(selectSql, new Object[]{name}, new UserRowMapper())
                 .stream()
                 .findAny();
     }
@@ -77,6 +77,6 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         String selectSql = "select * from person LEFT JOIN person_role ON person_role.role_id=person.role_id ";
-        return jdbcTemplate.query(selectSql, new UserMapper());
+        return jdbcTemplate.query(selectSql, new UserRowMapper());
     }
 }

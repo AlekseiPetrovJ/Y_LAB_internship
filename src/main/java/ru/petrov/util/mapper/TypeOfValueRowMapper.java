@@ -6,7 +6,7 @@ import ru.petrov.model.TypeOfValue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TypeOfValueMapper implements RowMapper<TypeOfValue> {
+public class TypeOfValueRowMapper implements RowMapper<TypeOfValue> {
     @Override
     public TypeOfValue mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         int id = resultSet.getInt("type_id");

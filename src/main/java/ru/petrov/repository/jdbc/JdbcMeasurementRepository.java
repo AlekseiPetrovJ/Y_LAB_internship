@@ -7,21 +7,21 @@ import ru.petrov.model.User;
 import ru.petrov.repository.MeasurementRepository;
 import ru.petrov.repository.TypeOfValueRepository;
 import ru.petrov.repository.UserRepository;
-import ru.petrov.util.mapper.MeasurementMapper;
+import ru.petrov.util.mapper.MeasurementRowMapper;
 
 import java.util.List;
 import java.util.Optional;
 
 public class JdbcMeasurementRepository implements MeasurementRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final MeasurementMapper measurementMapper;
+    private final MeasurementRowMapper measurementRowMapper;
     private final UserRepository userRepository;
 
     @Autowired
-    public JdbcMeasurementRepository(JdbcTemplate jdbcTemplate, UserRepository userRepository, TypeOfValueRepository typeRepository, MeasurementMapper measurementMapper) {
+    public JdbcMeasurementRepository(JdbcTemplate jdbcTemplate, UserRepository userRepository, TypeOfValueRepository typeRepository, MeasurementRowMapper measurementRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.userRepository = userRepository;
-        this.measurementMapper = measurementMapper;
+        this.measurementRowMapper = measurementRowMapper;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
                 "    FROM measurement WHERE person_id=? " +
                 ") AS subquery " +
                 "WHERE rn = 1;";
-        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementMapper);
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementRowMapper);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
         String selectSql = "SELECT measurement_id, measurement_value, measurement.type_id " +
                 "FROM measurement " +
                 "WHERE reg_year=? AND reg_month=? AND measurement.person_id=?";
-        return jdbcTemplate.query(selectSql, new Object[]{year, month, userId}, measurementMapper);
+        return jdbcTemplate.query(selectSql, new Object[]{year, month, userId}, measurementRowMapper);
     }
 
     @Override
@@ -69,6 +69,6 @@ public class JdbcMeasurementRepository implements MeasurementRepository {
                 "FROM measurement  " +
                 "WHERE measurement.person_id=? " +
                 "ORDER BY reg_year, reg_month";
-        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementMapper);
+        return jdbcTemplate.query(selectSql, new Object[]{userId}, measurementRowMapper);
     }
 }

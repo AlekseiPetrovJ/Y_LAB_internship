@@ -1,4 +1,32 @@
-driver: org.postgresql.Driver
-url: jdbc:postgresql://localhost:5433/ylab
-db_user: ylab
-password: ylabylab
+spring:
+  profiles:
+    active: "development"
+---
+spring:
+  config:
+    activate:
+      on-profile: "development"
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/ylab
+    db_user: ylab
+    password: ylabylab
+  liquibase:
+    changelog: classpath:db/changelog/changelog.xml
+  logging:
+    level:
+      org.springframework.security.web: DEBUG
+# swagger-ui custom path
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui.html
+# /api-docs endpoint custom path
+  api-docs:
+    path: /api-docs
+---
+spring:
+  config:
+    activate:
+      on-profile: "production"
